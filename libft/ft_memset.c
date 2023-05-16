@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/16 01:53:23 by yfawzi           ###   ########.fr       */
+/*   Created: 2022/10/07 15:50:30 by yfawzi            #+#    #+#             */
+/*   Updated: 2022/11/09 17:40:01 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft/libft.h"
-
-typedef struct t_args
+void	*ft_memset(void *b, int c, size_t len)
 {
-	char	*command;
-	char	*flags;
-}	t_args;
+	unsigned char	ch;
+	char			*s;
 
-void	env(char **enva);
-void	ft_exit(void);
-void	pwd(void);
-void	cd(t_args args);
-void	echo(t_args args);
-
-#endif
+	s = (char *)(b);
+	ch = c;
+	while (len)
+	{
+		*s = ch;
+		s++;
+		len--;
+	}
+	return (b);
+}

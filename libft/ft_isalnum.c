@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/16 01:53:23 by yfawzi           ###   ########.fr       */
+/*   Created: 2022/10/05 21:49:03 by yfawzi            #+#    #+#             */
+/*   Updated: 2022/10/20 21:04:20 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft/libft.h"
-
-typedef struct t_args
+int	ft_isalnum(int c)
 {
-	char	*command;
-	char	*flags;
-}	t_args;
-
-void	env(char **enva);
-void	ft_exit(void);
-void	pwd(void);
-void	cd(t_args args);
-void	echo(t_args args);
-
-#endif
+	if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}

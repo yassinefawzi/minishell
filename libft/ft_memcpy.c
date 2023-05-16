@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/16 01:53:23 by yfawzi           ###   ########.fr       */
+/*   Created: 2022/10/06 01:18:13 by yfawzi            #+#    #+#             */
+/*   Updated: 2022/10/23 23:24:23 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft/libft.h"
-
-typedef struct t_args
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	char	*command;
-	char	*flags;
-}	t_args;
+	char	*s;
+	char	*d;
 
-void	env(char **enva);
-void	ft_exit(void);
-void	pwd(void);
-void	cd(t_args args);
-void	echo(t_args args);
-
-#endif
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	s = (char *)src;
+	d = (char *)dest;
+	while (n)
+	{
+		*d++ = *s++;
+		n--;
+	}
+	return (dest);
+}

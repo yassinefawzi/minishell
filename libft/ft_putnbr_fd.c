@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/16 01:53:23 by yfawzi           ###   ########.fr       */
+/*   Created: 2022/10/12 21:50:02 by yfawzi            #+#    #+#             */
+/*   Updated: 2022/10/20 21:04:57 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft/libft.h"
-
-typedef struct t_args
+void	ft_putnbr_fd(int n, int fd)
 {
-	char	*command;
-	char	*flags;
-}	t_args;
+	long int	n1;
 
-void	env(char **enva);
-void	ft_exit(void);
-void	pwd(void);
-void	cd(t_args args);
-void	echo(t_args args);
-
-#endif
+	n1 = (long int)n;
+	if (n1 < 0)
+	{
+		n1 *= -1;
+		write(fd, "-", 1);
+	}
+	if (n1 <= 9)
+		ft_putchar_fd((n1 + 48), fd);
+	else
+	{
+		ft_putnbr_fd(n1 / 10, fd);
+		ft_putnbr_fd(n1 % 10, fd);
+	}
+}

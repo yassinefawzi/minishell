@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/16 01:53:23 by yfawzi           ###   ########.fr       */
+/*   Created: 2022/10/08 14:35:44 by yfawzi            #+#    #+#             */
+/*   Updated: 2022/10/23 02:54:40 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft/libft.h"
-
-typedef struct t_args
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*command;
-	char	*flags;
-}	t_args;
+	void	*p;
 
-void	env(char **enva);
-void	ft_exit(void);
-void	pwd(void);
-void	cd(t_args args);
-void	echo(t_args args);
-
-#endif
+	if (size * count > SIZE_MAX)
+		return (0);
+	p = malloc(count * size);
+	if (p == NULL)
+		return (NULL);
+	ft_memset(p, '\0', count * size);
+	return (p);
+}

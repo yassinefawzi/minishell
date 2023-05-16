@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/16 01:53:23 by yfawzi           ###   ########.fr       */
+/*   Created: 2022/10/13 00:09:15 by yfawzi            #+#    #+#             */
+/*   Updated: 2022/10/23 23:34:57 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft/libft.h"
-
-typedef struct t_args
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char	*command;
-	char	*flags;
-}	t_args;
+	int		len;
+	char	*s1;
+	int		i;
 
-void	env(char **enva);
-void	ft_exit(void);
-void	pwd(void);
-void	cd(t_args args);
-void	echo(t_args args);
-
-#endif
+	i = 0;
+	if (s == NULL)
+		return (NULL);
+	len = ft_strlen(s);
+	s1 = (char *)malloc(len + 1);
+	if (s1 == NULL)
+		return (NULL);
+	while (s[i] != '\0')
+	{
+		s1[i] = f(i, s[i]);
+		i++;
+	}
+	s1[i] = '\0';
+	return (s1);
+}

@@ -43,11 +43,19 @@ void	echo(t_args args)
 
 void	cd(t_args args)
 {
-	int	val;
+	int		val;
+	char	*str;
+	char	*str1;
+	int		i;
+	int		j;
 
 	val = chdir(args.command);
 	if (val < 0)
+	{
+		str = getcwd(0, 0);
+		
 		perror("cd");
+	}
 }
 
 void	pwd(void)
@@ -72,7 +80,22 @@ void	env(char **enva)
 	while (enva[i])
 		printf("%s\n", enva[i++]);
 }
-int main()
+
+void ft_unset(char **envp, const char *var_name)
 {
-	
+    int i = 0;
+    while (envp[i])
+    {
+        if (ft_strcmp(envp[i], var_name) == 0)
+        {
+            free(envp[i]);
+            while (envp[i])
+            {
+                envp[i] = envp[i + 1];
+                i++;
+            }
+            return;
+        }
+        i++;
+    }
 }
