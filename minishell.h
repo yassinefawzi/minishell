@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/31 02:52:36 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/05/31 18:38:17 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ typedef struct t_args
 	char	*command;
 	char	*flags;
 	struct 	t_args	*next;
-	
 }	t_args;
 
-void	env(char **enva);
+void	env(t_env *enva);
 void	ft_exit(void);
 void	pwd(void);
 void	cd(t_args args);

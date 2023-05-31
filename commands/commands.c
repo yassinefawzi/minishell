@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/31 02:52:23 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/05/31 18:36:44 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,17 @@ void	ft_exit(void)
 	exit(0);
 }
 
-void	env(char **enva)
+void	env(t_env *enva)
 {
 	int	i;
 
 	i = 0;
-	while (enva[i])
-		printf("%s\n", enva[i++]);
+	while (enva)
+	{
+		printf("%s", enva->name);
+		printf("%s\n", enva->value);
+		enva = enva->next;
+	}
 }
 
 void ft_unset(char **envp, char *var_name)
@@ -129,4 +133,13 @@ void ft_unset(char **envp, char *var_name)
         }
         i++;
     }
+}
+
+int main(int arc, char **arv)
+{
+	t_args args;
+	args.command = arv[1];
+	args.flags = arv[2];
+	cd(args);
+	pwd();
 }

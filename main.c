@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/31 03:16:12 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/05/31 18:38:32 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,10 @@ t_env	*ret_env(char **enva)
 			tmp = env;
 		}
 		else
+		{
 			env->next = ft_lstnew(enva[i]);
-		
+			env = env->next;
+		}
 		i++;
 	}
 	return (tmp);
@@ -108,13 +110,14 @@ int main(int arc, char **arv, char **enva)
 	t_env	*envar;
 
 	i = 0;
-	// if (arc > 1)
-	// {
+	//if (arc > 1)
+	//{
 		envar = ret_env(enva);
 		while (envar)
 		{
 			printf("%s", envar->name);
-			printf("%s\n", envar->value);
+			printf("%s", envar->value);
+			printf("\n");
 			envar = envar->next;
 		}
 		free_list(envar);
