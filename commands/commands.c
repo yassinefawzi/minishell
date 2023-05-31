@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/31 18:36:44 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/05/31 18:39:12 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,4 @@ void ft_unset(char **envp, char *var_name)
         }
         i++;
     }
-}
-
-int main(int arc, char **arv)
-{
-	t_args args;
-	args.command = arv[1];
-	args.flags = arv[2];
-	cd(args);
-	pwd();
 }
