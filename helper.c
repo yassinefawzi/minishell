@@ -1,32 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 14:19:47 by yfawzi            #+#    #+#             */
-/*   Updated: 2022/10/23 22:59:21 by yfawzi           ###   ########.fr       */
+/*   Created: 2023/05/19 22:49:26 by yfawzi            #+#    #+#             */
+/*   Updated: 2023/05/20 03:02:12 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+char	*ft_strcpy(char *str, char *str1)
 {
-	size_t	i;
-	size_t	srclen;
+	int	i;
 
+	if (!str1)
+		return (0);
 	i = 0;
-	srclen = ft_strlen(src);
-	if (dstsize != 0)
+	while (str1[i])
 	{
-		while (src[i] && (i < dstsize - 1))
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}	
-	return (srclen);
+		str[i] = str1[i];
+		i++;
+	}
+	return (str);
+}
+
+int	ft_strcmp(char *str, char *str1)
+{
+	int	i;
+
+	if (!str || !str1)
+		return (0);
+	i = 0;
+	while (str[i] && str1[i])
+	{
+		if (str[i] != str1[i])
+			return (0);
+		i++;
+	}
+	return (1);
 }
