@@ -11,13 +11,13 @@ SRCS =	commands/commands.c \
 OBJS = $(SRCS:.c=.o)
 
 RM = rm -f
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc -Wall -Wextra -Werror $(OBJS) -o $(NAME) -lreadline
+	cc $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
 
 clean:
 	$(RM) $(OBJS)
