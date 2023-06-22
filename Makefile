@@ -2,6 +2,7 @@ SRCS =	commands/commands.c \
 		helper.c \
 		main.c \
 		free.c \
+		env.c \
 		libft/ft_strlen.c \
 		libft/ft_strjoin.c \
 		libft/ft_strncmp.c \
@@ -16,7 +17,7 @@ NAME = minishell
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc -Wall -Wextra -Werror $(OBJS) -o $(NAME)
+	cc -Wall -Wextra -Werror $(OBJS) -o $(NAME) -lreadline
 
 clean:
 	$(RM) $(OBJS)

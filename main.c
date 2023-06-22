@@ -6,48 +6,49 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/11 02:35:15 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/06/22 19:52:37 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+// int	num_of_pipes(char *args)
+// {
+// 	int	i;
+// 	int	ret;
 
-int	numofarguments(char **args)
-{
-	int	i;
-	int	j;
-	int	retval;
+// 	i = 0;
+// 	ret = 0;
+// 	while (args[i])
+// 	{
+// 		if (args[i] == '|')
+// 		{
+// 			if (args[i + 1] == '|')
+// 				return ;
+			
+		
+// 		}
+// 	}	
+// }
 
-	i = 0;
-	retval = 0;
-	while (args[i])
-	{
-		j = 0;
-		while (args[i][j])
-		{
-			if (args[i][i] == '|')
-			{
-				retval++;
-				while (args[i][j + 1] == '|')
-					j++;
-			}
-			j++;
-		}
-		i++;
-	}
-	return (retval + 1);
-}
+// char	**ret_args(char *args)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	**ret;
 
-char	**ret_args(char **args)
-{
-	int		i;
-	int		j;
-	char	**ret;
-
-	ret = malloc((numofarguments(args) * sizeof(char *)) + 1);
-	
-	
-}
+// 	i = 0;
+// 	j = 0;
+// 	while (args[i])
+// 	{
+// 		if (args[j] == '|')
+// 		{
+// 			if (args[j + 1] == '|')
+// 				return ;
+			
+// 		}
+		
+// 	}
+// }
 
 int main(int arc, char **arv, char **enva)
 {
@@ -55,12 +56,19 @@ int main(int arc, char **arv, char **enva)
 	t_env	*envar;
 	t_args	*args;
 	char	**argums;
+	char	*line;
+	char	*currdir;
 
 	i = 0;
-	if (arc > 1)
-	{
+	while (1)
+	{	
+		currdir = getcwd(0, 0);
+		currdir = ft_strjoin(currdir, " ");
 		envar = ret_env(enva);
-
+		line = readline(currdir);
+		printf("%s\n", line);
+		free(currdir);
+		free(line);
 		free_list(envar);
 	}
 }
