@@ -6,23 +6,24 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 16:08:55 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/07 16:11:19 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/06/29 00:59:18 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*commandret(char *str)
+char	*ret_command(char *str)
 {
+	char	*ret;
 	int		i;
-	char	*str1;
 
-	str1 = malloc(ft_strlen(str));
+	ret = malloc(ft_strlen(str) + 1);
 	i = 0;
-	while (str[i] && str[i] != '|')
+	while (str[i])
 	{
-		str1[i] = str[i];
+		ret = str[i];
 		i++;
 	}
-	return (str1);
+	ret[i] = 0;
+	return (ret);
 }

@@ -6,36 +6,51 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/07 16:11:55 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/06/29 03:18:48 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-void	ft_lstadd_back(t_args **alst, t_args *new)
+
+t_args	*ft_lstlast(t_args *list)
+{
+	while (list)
+	{
+		if (!list->next)
+			return (list);
+		list = list->next;
+	}
+	return (list);
+}
+
+void	ft_lstadd_back(t_args **list, t_args *new)
 {
 	t_args	*last;
 
-	if (alst)
+	if (!new)
+		return (0);
+	if (list)
 	{
-		if (*alst)
+		if (*list)
 		{
-			last = ft_lstlast(*alst);
+			last = ft_lstlast(*list);
 			last->next = new;
 		}
 		else
-			*alst = new;
+			*list = new;
 	}
 }
 
-t_args	*ft_lstnew(char *arg)
+t_args	*ft_lstnew_args(char *arg)
 {
 	t_args	*args;
 
+	if (!arg)
+		return (0);
 	args = malloc(sizeof(t_args));
 	if (!args)
 		return (0);
-	args->command = commandret(args);
-	env->value = env_val(enva);
-	env->next = 0;
-	return (env);
+	args->command = ft_split(arg, '-');
+	args->next = 0;
+	return (args);
 }

@@ -6,88 +6,88 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/07 15:59:53 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/06/29 01:02:33 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	echo(t_args args)
-{
-	int	i;
-	int	j;
+// void	echo(t_args args)
+// {
+// 	int	i;
+// 	int	j;
 
-	if (!args.flags)
-		printf("%s\n", args.command);
-	if (!args.command)
-		printf("\n");
-	else
-	{
-		i = 1;
-		j = 0;
-		while (args.flags[i])
-		{
-			if (args.flags[i] != 'n')
-			{
-				j++;
-				break ;
-			}
-			i++;
-		}
-		if (j == 1)
-			printf("%s %s\n", args.command, args.flags);
-		else
-			printf("%s", args.command);
-	}
-}
+// 	if (!args.flags)
+// 		printf("%s\n", args.command);
+// 	if (!args.command)
+// 		printf("\n");
+// 	else
+// 	{
+// 		i = 1;
+// 		j = 0;
+// 		while (args.flags[i])
+// 		{
+// 			if (args.flags[i] != 'n')
+// 			{
+// 				j++;
+// 				break ;
+// 			}
+// 			i++;
+// 		}
+// 		if (j == 1)
+// 			printf("%s %s\n", args.command, args.flags);
+// 		else
+// 			printf("%s", args.command);
+// 	}
+// }
 
-void	cd(t_args args)
-{
-	int		val;
-	char	*str;
-	char	*str1;
-	int		i;
-	int		j;
+// void	cd(t_args args)
+// {
+// 	int		val;
+// 	char	*str;
+// 	char	*str1;
+// 	int		i;
+// 	int		j;
 
-	i = 0;
-	j = 0;
-	if (args.command == NULL)
-	{
-		str = getcwd(0, 0);
-		while (j != 3)
-		{
-			if (str[i] == '/')
-				j++;
-			i++;
-		}
-		str1 = malloc(i);
-		ft_strlcpy(str1, str, i);
-		free(str);
-		val = chdir(str1);
-		if (val < 0)
-		{
-			perror("cd");
-			return ;
-		}
-		return ;
-	}
-	val = chdir(args.command);
-	if (val < 0)
-	{
-		str = getcwd(0, 0);
-		i = ft_strlen(str);
-		j = ft_strlen(args.command);
-		str1 = malloc(i + j + 1);
-		str1 = ft_strcpy(str1, str);
-		str1[i] = '/';
-		str1[i + 1] = '\0';
-		str1 = ft_strjoin(str1, args.command);
-		val = chdir(str1);
-		free(str1);
-		if (val < 0)
-			perror("cd");
-	}
-}
+// 	i = 0;
+// 	j = 0;
+// 	if (args.command == NULL)
+// 	{
+// 		str = getcwd(0, 0);
+// 		while (j != 3)
+// 		{
+// 			if (str[i] == '/')
+// 				j++;
+// 			i++;
+// 		}
+// 		str1 = malloc(i);
+// 		ft_strlcpy(str1, str, i);
+// 		free(str);
+// 		val = chdir(str1);
+// 		if (val < 0)
+// 		{
+// 			perror("cd");
+// 			return ;
+// 		}
+// 		return ;
+// 	}
+// 	val = chdir(args.command);
+// 	if (val < 0)
+// 	{
+// 		str = getcwd(0, 0);
+// 		i = ft_strlen(str);
+// 		j = ft_strlen(args.command);
+// 		str1 = malloc(i + j + 1);
+// 		str1 = ft_strcpy(str1, str);
+// 		str1[i] = '/';
+// 		str1[i + 1] = '\0';
+// 		str1 = ft_strjoin(str1, args.command);
+// 		val = chdir(str1);
+// 		free(str1);
+// 		if (val < 0)
+// 			perror("cd");
+// 	}
+// }
 
 void	pwd(void)
 {

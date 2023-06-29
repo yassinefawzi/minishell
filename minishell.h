@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/22 19:00:34 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/06/29 03:16:24 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ typedef struct t_env
 
 typedef struct t_args
 {
-	char	*command;
-	char	*flags;
+	char	**command;
 	struct 	t_args	*next;
 }	t_args;
 
@@ -46,4 +45,6 @@ char	*env_val(char *str);
 int		val_len(char *str);
 char	*env_name(char *str);
 t_env	*ft_lstnew(char *enva);
+t_args	*ft_lstnew_args(char *arg);
+void	ft_lstadd_back(t_args **list, t_args *new);
 #endif
