@@ -3,21 +3,18 @@ SRCS =	commands/commands.c \
 		main.c \
 		free.c \
 		env.c \
-		libft/ft_strlen.c \
-		libft/ft_strjoin.c \
-		libft/ft_strncmp.c \
-		libft/ft_strlcpy.c
- 
+		linkfile.c
+
 OBJS = $(SRCS:.c=.o)
 
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror
+#CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
+	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a
 
 clean:
 	$(RM) $(OBJS)

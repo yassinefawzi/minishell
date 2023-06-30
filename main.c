@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/29 03:19:06 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/06/30 01:42:59 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ int	check_if_valid(char *str)
 			if (str[i + 1] && str[i + 1] == '|')
 			{
 				if (str[i + 2] && str[i + 2] == '|')
-					error();
-				return (pipnum);
+				{
+					write(2, "zsh: parse error near `|'\n", 26);
+					return (0);
+				}
+				return (pipnum + 1);
 			}
 			pipnum++;
 		}
@@ -49,6 +52,7 @@ int	len_of_pipes(char *str, int num)
 	}
 	return (i);
 }
+
 char	*fixed_pipes(char *str, int num)
 {
 	int		i;
@@ -75,15 +79,15 @@ int	cleaned_len(char *str)
 
 	ret = 0;
 	i = 0;
-	while (str[i] == ' ' || str[i] == "	")
+	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	while (str[i])
 	{
-		if (str[i] == ' ' || str[i] == '	')
+		if (str[i] == ' ' || str[i] == '\t')
 		{
-			if (str[i + 1] == ' ' || str[i] == '	')
+			if (str[i + 1] == ' ' || str[i] == '\t')
 			{
-				while (str[i] == ' ' || str[i] == "	")
+				while (str[i] == ' ' || str[i] == '\t')
 					i++;
 				ret++;
 			}
@@ -103,11 +107,11 @@ char	*ft_clean(char *str)
 	i = 0;
 	j = 0;
 	ret = malloc(cleaned_len(str) + 1);
-	while (str[i] == ' ' || str[i] == "	")
+	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	while (str[i])
 	{
-		if (str[i] == ' ' && str[i] == '	')
+		if (str[i] == ' ' && str[i] == '\t')
 		{
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
 				i++;
@@ -116,11 +120,12 @@ char	*ft_clean(char *str)
 		i++;
 		j++;
 	}
+	ret[j] = 0;
 	free(str);
 	return (ret);
 }
 
-t_args	ret_com(char *str)
+t_args	*ret_com(char *str)
 {
 	t_args	*ret_args;
 	char	**args;
@@ -129,7 +134,7 @@ t_args	ret_com(char *str)
 
 	i = 0;
 	check_for_double = check_if_valid(str);
-	if (check_for_double > 0)
+	if (check_for_double >=  0)
 		str = fixed_pipes(str, check_for_double);
 	args = ft_split(str, '|');
 	while (args[i])
@@ -140,9 +145,50 @@ t_args	ret_com(char *str)
 	i = 0;
 	while (args[i])
 	{
-		ft_lstadd_back(ret_args, ft_lstnew_args(args[i]));
+		ft_lstadd_back(&ret_args, ft_lstnew_args(args[i]));
+		i++;
 	}
-	
+	i = 0;
+	while (args[i])
+		free(args[i++]);
+	free(args);
+	return (ret_args);
+}
+
+void	ft_printer(t_args *args)
+{
+	int	i;
+
+	i = 0;
+	while (args)
+	{
+		while (args->command[i])
+		{
+			printf("%s\n", args->command[i++]);
+		}
+		i = 0;
+		printf("-------------\n");
+		args = args->next;
+	}
+}
+void	ft_free(t_args *args)
+{
+	int		i;
+	t_args	*tmp;
+	t_args	*tmp1;
+
+	tmp = args;
+	i = 0;
+	while (tmp)
+	{
+		while (tmp->command[i])
+			free(tmp->command[i++]);
+		i = 0;
+		free(tmp->command);
+		tmp1 = tmp;
+		tmp = tmp->next;
+		free(tmp1);
+	}
 }
 
 int main(int arc, char **arv, char **enva)
@@ -161,9 +207,11 @@ int main(int arc, char **arv, char **enva)
 		currdir = ft_strjoin(currdir, " ");
 		envar = ret_env(enva);
 		line = readline(currdir);
-		printf("%s\n", line);
+		args = ret_com(line);		
+		ft_printer(args);
 		free(currdir);
 		free(line);
+		ft_free(args);
 		free_list(envar);
 	}
 }
