@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/30 22:21:57 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/06/30 22:45:40 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	check_if_valid(char *str)
 
 	i = 0;
 	pipnum = 0;
-
-	
 	while (str[i])
 	{
 		if (str[i] == '|')
@@ -137,7 +135,14 @@ t_args	*ret_com(char *str)
 	i = 0;
 	check_for_double = check_if_valid(str);
 	if (check_for_double >=  0)
+	{
+		if (check_for_double == 0)
+		{
+			printf("OK\n");
+			return (NULL);
+		}
 		str = fixed_pipes(str, check_for_double);
+	}
 	args = ft_split(str, '|');
 	while (args[i])
 	{
@@ -209,10 +214,9 @@ int main(int arc, char **arv, char **enva)
 		currdir = ft_strjoin(currdir, " ");
 		envar = ret_env(enva);
 		line = readline(currdir);
-		args = ret_com(line);		
+		args = ret_com(line);	
 		ft_printer(args);
 		free(currdir);
-		free(line);
 		ft_free(args);
 		free_list(envar);
 	}
