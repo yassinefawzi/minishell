@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/30 22:45:40 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/04 03:28:52 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,10 @@ int	check_if_valid(char *str)
 	{
 		if (str[i] == '|')
 		{
+			while (str[i + 1] == ' ' || str[i + 1] == '\t')
+				i++;	
 			if (str[i + 1] && str[i + 1] == '|')
 			{
-				if (str[i + 2] && str[i + 2] == '|')
-				{
-					write(2, "zsh: parse error near `|'\n", 26);
-					return (0);
-				}
 				return (pipnum + 1);
 			}
 			pipnum++;
@@ -124,6 +121,103 @@ char	*ft_clean(char *str)
 	free(str);
 	return (ret);
 }
+int	ft_spaces_len(char	*str)
+{
+	int	i;
+	int	ret;
+
+	ret = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ' || str[i] == '\t')
+		{
+			while (str[i + 1] == ' ' || str[i + 1] == '\t')
+				i++;
+		}
+		if (str[i])
+			i++;
+		ret++;
+	}
+	return (ret);
+}
+
+char	*cleaned_spaces(char *str)
+{
+	int		i;
+	int		j;
+	char	*ret;
+
+	i = 0;
+	j = 0;
+	ret = malloc(ft_spaces_len(str) + 1);
+	while (str[i])
+	{
+		if (str[i] == ' ' || str[i] == '\t')
+		{
+			while (str[i + 1] == ' ' || str[i + 1] == '\t')
+				i++;
+		}
+		if (str[i])
+		{
+			if (str[i] == '|')
+			{
+				ret[j] = str[i];
+				j++;
+				i++;
+				while (str[i] == ' ' || str[i] == '\t')
+					i++;
+				
+			}
+			ret[j] = str[i];
+			i++;
+			j++;
+		}
+	}
+	ret[j] = 0;
+	free(str);
+	return (ret);
+}
+
+int	check_for_pipes(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '|')
+		{
+			if (str[i + 1] == '|')
+			{
+				error_message("parse error near `|'\n");
+				return (-1);
+			}
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	check_for_empty_pipe(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '|')
+		{
+			if (!str[i + 1])
+			{
+				error_message("pipe error\n");
+				return (-1);
+			}
+		}
+		i++;
+	}
+	return (1);
+}
 
 t_args	*ret_com(char *str)
 {
@@ -133,14 +227,15 @@ t_args	*ret_com(char *str)
 	int		check_for_double;
 
 	i = 0;
+	ret_args = 0;
+	str = cleaned_spaces(str);
+	if (check_for_pipes(str) < 0 || check_for_empty_pipe(str) < 0)
+		return (0);
 	check_for_double = check_if_valid(str);
 	if (check_for_double >=  0)
 	{
 		if (check_for_double == 0)
-		{
-			printf("OK\n");
-			return (NULL);
-		}
+			return (NULL); 
 		str = fixed_pipes(str, check_for_double);
 	}
 	args = ft_split(str, '|');
@@ -170,9 +265,7 @@ void	ft_printer(t_args *args)
 	while (args)
 	{
 		while (args->command[i])
-		{
 			printf("%s\n", args->command[i++]);
-		}
 		i = 0;
 		printf("-------------\n");
 		args = args->next;
@@ -203,7 +296,6 @@ int main(int arc, char **arv, char **enva)
 	int		i;
 	t_env	*envar;
 	t_args	*args;
-	char	**argums;
 	char	*line;
 	char	*currdir;
 
@@ -214,7 +306,7 @@ int main(int arc, char **arv, char **enva)
 		currdir = ft_strjoin(currdir, " ");
 		envar = ret_env(enva);
 		line = readline(currdir);
-		args = ret_com(line);	
+		args = ret_com(line);
 		ft_printer(args);
 		free(currdir);
 		ft_free(args);

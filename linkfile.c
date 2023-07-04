@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/30 01:34:24 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/04 01:36:18 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ void	ft_lstadd_back(t_args **list, t_args *new)
 			last->next = new;
 		}
 		else
+		{
 			*list = new;
+		}
 	}
 }
 
 t_args	*ft_lstnew_args(char *arg)
 {
 	t_args	*args;
-	char	*str;
 
 	if (!arg)
 		return (0);

@@ -3,7 +3,8 @@ SRCS =	commands/commands.c \
 		main.c \
 		free.c \
 		env.c \
-		linkfile.c
+		linkfile.c \
+		error.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -14,8 +15,7 @@ NAME = minishell
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a
-
+	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a -g3 -fsanitize=address
 clean:
 	$(RM) $(OBJS)
 

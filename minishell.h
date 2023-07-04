@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/29 03:16:24 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/04 02:50:32 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	*env_val(char *str);
 int		val_len(char *str);
 char	*env_name(char *str);
 t_env	*ft_lstnew(char *enva);
+void	error_message(char *str);
 t_args	*ft_lstnew_args(char *arg);
 void	ft_lstadd_back(t_args **list, t_args *new);
 #endif
