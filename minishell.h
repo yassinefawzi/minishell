@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/06 00:20:43 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/08 00:57:36 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,15 @@ int		quote_len(char	*str, int i);
 int		ft_strcmp(char *str, char *str1);
 char	*ft_strcpy(char *str, char *str1);
 void	ft_lstadd_back(t_args **list, t_args *new);
+void	ft_free(t_args *args);
+int		check_if_valid(char *str);
+int		cleaned_len(char *str);
+char	*ft_clean(char *str);
+int		ft_spaces_len(char	*str);
+char	*cleaned_spaces(char *str);
+int		first_quote(char *str, char hol);
+int		len_of_pipes(char *str, int num);
+char	*fixed_pipes(char *str, int num);
+int		check_for_pipes(char *str);
+int		check_for_empty_pipe(char *str);
 #endif

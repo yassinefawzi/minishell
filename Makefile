@@ -5,7 +5,9 @@ SRCS =	commands/commands.c \
 		env.c \
 		linkfile.c \
 		error.c \
-		quotes_check.c
+		quotes_check.c \
+		spaces_parsing.c \
+		pipes.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,11 +6,12 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 23:40:50 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/07 02:23:44 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/08 00:51:58 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 int	check_if_completed(char *str, char cmp)
 {
 	int	i;
@@ -73,4 +74,14 @@ int	check_quotes(char *str)
 		return (-1);
 	}
 	return (0);
+}
+
+int	first_quote(char *str, char hol)
+{
+	int	i;
+
+	i = 1;
+	while (str[i] && str[i] != hol)
+		i++;
+	return (i);
 }
