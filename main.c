@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/04 03:28:52 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/08 00:46:25 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,21 @@ char	*fixed_pipes(char *str, int num)
 	return (ret);
 }
 
+int	first_quote(char *str, char hol)
+{
+	int	i;
+
+	i = 1;
+	while (str[i] && str[i] != hol)
+		i++;
+	return (i);
+}
+
 int	cleaned_len(char *str)
 {
 	int	i;
 	int	ret;
+	int	hol;
 
 	ret = 0;
 	i = 0;
@@ -80,6 +91,16 @@ int	cleaned_len(char *str)
 		i++;
 	while (str[i])
 	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			hol = first_quote(str + i, str[i]);
+			while (str[i] && hol)
+			{
+				i++;
+				ret++;
+				hol--;
+			}
+		}
 		if (str[i] == ' ' || str[i] == '\t')
 		{
 			if (str[i + 1] == ' ' || str[i] == '\t')
@@ -92,22 +113,37 @@ int	cleaned_len(char *str)
 		ret++;
 		i++;
 	}
-	return (ret);
+	return (ret - 1);
 }
+
 
 char	*ft_clean(char *str)
 {
 	int		i;
 	int		j;
+	int		check;
 	char	*ret;
+	int		hol;
 
 	i = 0;
 	j = 0;
+	check = 0;
 	ret = malloc(cleaned_len(str) + 1);
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	while (str[i])
 	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			hol = first_quote(str + i, str[i]);
+			while (str[i] && hol)
+			{
+				ret[j] = str[i];
+				i++;
+				j++;
+				hol--;
+			}
+		}
 		if (str[i] == ' ' && str[i] == '\t')
 		{
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
@@ -121,15 +157,26 @@ char	*ft_clean(char *str)
 	free(str);
 	return (ret);
 }
+
 int	ft_spaces_len(char	*str)
 {
-	int	i;
-	int	ret;
+	int		i;
+	int		ret;
+	char	hol;
 
 	ret = 0;
 	i = 0;
 	while (str[i])
 	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			hol = str[i++];
+			while (str[i] && str[i] != hol)
+			{
+				ret++;
+				i++;
+			}
+		}
 		if (str[i] == ' ' || str[i] == '\t')
 		{
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
@@ -146,13 +193,29 @@ char	*cleaned_spaces(char *str)
 {
 	int		i;
 	int		j;
+	int		k;
 	char	*ret;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	ret = malloc(ft_spaces_len(str) + 1);
 	while (str[i])
 	{
+		if (str[i] == '\"' || str[i] == '\'')
+		{
+			k = quote_len(str, i) + 1;
+			while (k > 0)
+			{
+				if (str[i] == '|')
+					str[i] = 1;
+				ret[j] = str[i];
+				i++;
+				j++;
+				k--;
+			}
+			i++;
+		}
 		if (str[i] == ' ' || str[i] == '\t')
 		{
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
@@ -228,6 +291,8 @@ t_args	*ret_com(char *str)
 
 	i = 0;
 	ret_args = 0;
+	if (check_quotes(str) < 0)
+		return (0);
 	str = cleaned_spaces(str);
 	if (check_for_pipes(str) < 0 || check_for_empty_pipe(str) < 0)
 		return (0);
@@ -306,10 +371,12 @@ int main(int arc, char **arv, char **enva)
 		currdir = ft_strjoin(currdir, " ");
 		envar = ret_env(enva);
 		line = readline(currdir);
+		add_history(line);  
 		args = ret_com(line);
 		ft_printer(args);
 		free(currdir);
 		ft_free(args);
 		free_list(envar);
 	}
-}
+
+} 

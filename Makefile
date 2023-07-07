@@ -4,7 +4,8 @@ SRCS =	commands/commands.c \
 		free.c \
 		env.c \
 		linkfile.c \
-		error.c
+		error.c \
+		quotes_check.c
 
 OBJS = $(SRCS:.c=.o)
 

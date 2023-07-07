@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/04 02:50:32 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/06 00:20:43 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,22 @@ typedef struct t_args
 	struct 	t_args	*next;
 }	t_args;
 
-void	env(t_env *enva);
-void	ft_exit(void);
 void	pwd(void);
+void	ft_exit(void);
 void	cd(t_args args);
+void	env(t_env *enva);
 void	echo(t_args args);
-char	*ft_strcpy(char *str, char *str1);
-int		ft_strcmp(char *str, char *str1);
-void	free_list(t_env *glo);
-t_env	*ret_env(char **enva);
-char	*env_val(char *str);
 int		val_len(char *str);
+char	*env_val(char *str);
 char	*env_name(char *str);
+t_env	*ret_env(char **enva);
+void	free_list(t_env *glo);
 t_env	*ft_lstnew(char *enva);
+int		check_quotes(char *str);
 void	error_message(char *str);
 t_args	*ft_lstnew_args(char *arg);
+int		quote_len(char	*str, int i);
+int		ft_strcmp(char *str, char *str1);
+char	*ft_strcpy(char *str, char *str1);
 void	ft_lstadd_back(t_args **list, t_args *new);
 #endif
