@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 23:40:50 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/08 00:51:58 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/10 08:30:57 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	check_if_completed(char *str, char cmp)
 	}
 	return (-1);
 }
+
 int	check_single_quote(char *str)
 {
 	int		i;

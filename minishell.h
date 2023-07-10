@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/08 00:57:36 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/10 05:28:52 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct t_env
 typedef struct t_args
 {
 	char	**command;
+	int		red;
 	struct 	t_args	*next;
 }	t_args;
 
@@ -40,25 +41,28 @@ void	echo(t_args args);
 int		val_len(char *str);
 char	*env_val(char *str);
 char	*env_name(char *str);
+char	*ft_clean(char *str);
 t_env	*ret_env(char **enva);
+void	ft_free(t_args *args);
 void	free_list(t_env *glo);
+int		cleaned_len(char *str);
 t_env	*ft_lstnew(char *enva);
 int		check_quotes(char *str);
 void	error_message(char *str);
-t_args	*ft_lstnew_args(char *arg);
-int		quote_len(char	*str, int i);
-int		ft_strcmp(char *str, char *str1);
-char	*ft_strcpy(char *str, char *str1);
-void	ft_lstadd_back(t_args **list, t_args *new);
-void	ft_free(t_args *args);
-int		check_if_valid(char *str);
-int		cleaned_len(char *str);
-char	*ft_clean(char *str);
 int		ft_spaces_len(char	*str);
+int		check_if_valid(char *str);
 char	*cleaned_spaces(char *str);
+t_args	*ft_lstnew_args(char *arg);
+int		check_for_pipes(char *str);
+int		quote_len(char	*str, int i);
+int		check_for_brackets(char *str);
+int		check_for_empty_pipe(char *str);
 int		first_quote(char *str, char hol);
 int		len_of_pipes(char *str, int num);
 char	*fixed_pipes(char *str, int num);
-int		check_for_pipes(char *str);
-int		check_for_empty_pipe(char *str);
+int		ft_strcmp(char *str, char *str1);
+char	*ft_strcpy(char *str, char *str1);
+int		bracket_counter(char *str, char sym);
+void	ft_lstadd_back(t_args **list, t_args *new);
+int		sym_check(char *str, char sym, char sym2);
 #endif

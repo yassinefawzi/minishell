@@ -6,9 +6,11 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:56:34 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/08 00:57:08 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/08 03:09:56 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 int	len_of_pipes(char *str, int num)
 {

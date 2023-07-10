@@ -6,11 +6,74 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/08 00:56:59 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/10 08:50:40 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_for_redirections(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '>')
+		{
+			if (str[i + 1] == '>')
+				return (3);
+			return (1);
+		}
+		else if (str[i] == '<')
+		{
+			if (str[i + 1] == '<')
+				return (4);
+			return (2);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	check_for_space_error(char *str)
+{
+	int		i;
+	int		j;
+	char	hol;
+
+	if (str[ft_strlen(str) - 1] == '>' || str[ft_strlen(str) - 1] == '<')
+	{
+		error_message("parsing error\n");
+		return (-1);
+	}
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '>' || str[i] == '<')
+		{
+			hol = str[i];
+			if (str[i + 2] == hol)
+			{
+				error_message("parsing error\n");
+				return (-1);
+			}
+			if (str[i + 1] && (str[i + 1] == ' ' || str[i + 1] == '\t'))
+			{
+				i++;
+				while (str[i + 1] == ' ' || str[i + 1] == '\t')
+					i++;
+				if (str[i + 1] && str[i + 1] == hol)
+				{
+					error_message("parsing error\n");
+					return (-1);
+				}
+			}
+		}
+		i++;
+	}
+	return (1);
+}
 
 t_args	*ret_com(char *str)
 {
@@ -21,9 +84,11 @@ t_args	*ret_com(char *str)
 
 	i = 0;
 	ret_args = 0;
-	if (check_quotes(str) < 0)
+	if (check_quotes(str) < 0 || check_for_brackets(str) < 0)
 		return (0);
 	str = cleaned_spaces(str);
+	if (check_for_space_error(str) < 0)
+		return (0);
 	if (check_for_pipes(str) < 0 || check_for_empty_pipe(str) < 0)
 		return (0);
 	check_for_double = check_if_valid(str);
@@ -43,6 +108,7 @@ t_args	*ret_com(char *str)
 	while (args[i])
 	{
 		ft_lstadd_back(&ret_args, ft_lstnew_args(args[i]));
+		ret_args->red = check_for_redirections(args[i]);
 		i++;
 	}
 	i = 0;
@@ -60,7 +126,11 @@ void	ft_printer(t_args *args)
 	while (args)
 	{
 		while (args->command[i])
-			printf("%s\n", args->command[i++]);
+		{
+			printf("%s\n", args->command[i]);
+			i++;
+		}
+		printf("%d\n", args->red);
 		i = 0;
 		printf("-------------\n");
 		args = args->next;

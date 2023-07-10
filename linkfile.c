@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/07 02:07:10 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/10 08:38:45 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,26 @@ void	ft_lstadd_back(t_args **list, t_args *new)
 	}
 }
 
-char	*cleaned_quote(char *str)
-{
-	int		i;
-	int		j;
-	char	*ret;
+// char	*cleaned_quote(char *str)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*ret;
 
-	if (!str)
-		return (0);
-	i = 0;
-	j = 0;
-	ret = malloc(ft_strlen(str));
-	while (str[i])
-	{
-		if (str[i] == '\"' || str[i] == '\'')
-			i++;
-		ret[j++] = str[i++];
-	}
-	ret[j] = 0;
-	return (ret);
-}
+// 	if (!str)
+// 		return (0);
+// 	i = 0;
+// 	j = 0;
+// 	ret = malloc(ft_strlen(str));
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '\"' || str[i] == '\'')
+// 			i++;
+// 		ret[j++] = str[i++];
+// 	}
+// 	ret[j] = 0;
+// 	return (ret);
+// }
 
 int	quote_looper(char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:52:47 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/08 00:53:59 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/10 08:59:20 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ int	check_if_valid(char *str)
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
 				i++;	
 			if (str[i + 1] && str[i + 1] == '|')
-			{
 				return (pipnum + 1);
-			}
 			pipnum++;
 		}
 		i++;
@@ -172,6 +170,7 @@ char	*cleaned_spaces(char *str)
 			}
 			i++;
 		}
+		printf("str[%d] == %s, ret == %s\n", i, str + i, ret);
 		if (str[i] == ' ' || str[i] == '\t')
 		{
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
