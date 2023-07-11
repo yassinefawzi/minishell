@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/10 05:28:52 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 10:36:52 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ void	free_list(t_env *glo);
 int		cleaned_len(char *str);
 t_env	*ft_lstnew(char *enva);
 int		check_quotes(char *str);
+void	return_symbol(char *str);
 void	error_message(char *str);
+void	hidden_symbols(char *str);
 int		ft_spaces_len(char	*str);
 int		check_if_valid(char *str);
 char	*cleaned_spaces(char *str);
@@ -63,6 +65,6 @@ char	*fixed_pipes(char *str, int num);
 int		ft_strcmp(char *str, char *str1);
 char	*ft_strcpy(char *str, char *str1);
 int		bracket_counter(char *str, char sym);
-void	ft_lstadd_back(t_args **list, t_args *new);
 int		sym_check(char *str, char sym, char sym2);
+void	ft_lstadd_back(t_args **list, t_args *new);
 #endif

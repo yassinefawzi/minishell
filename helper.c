@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 22:49:26 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/05/20 03:02:12 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 10:50:20 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,48 @@ int	ft_strcmp(char *str, char *str1)
 		i++;
 	}
 	return (1);
+}
+
+void	hidden_symbols(char *str)
+{
+	int		i;
+	char	hol;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			hol = str[i++];
+			while (str[i] && str[i] != hol)
+			{
+				if (str[i] == '|')
+					str[i] = 1;
+				else if (str[i] == '>')
+					str[i] = 2;
+				else if (str[i] == '<')
+					str[i] = 3;
+				i++;
+			}
+			i++;
+		}
+		i++;
+	}
+}
+
+void	return_symbol(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 1)
+			str[i] = '|';
+		else if (str[i] == 2)
+			str[i] = '>';
+		else if (str[i] == 3)
+			str[i] = '<';
+		i++;
+	}
 }

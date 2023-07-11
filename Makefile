@@ -13,13 +13,12 @@ SRCS =	commands/commands.c \
 OBJS = $(SRCS:.c=.o)
 
 RM = rm -f
-#CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a 
+	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a -fsanitize=address
 clean:
 	$(RM) $(OBJS)
 

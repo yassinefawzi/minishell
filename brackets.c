@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 03:48:29 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/10 08:35:57 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 10:52:44 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int	bracket_counter(char *str, char sym)
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
-		{
 			i += quote_len(str, i) + 2;
-		}
 		if (str[i] == sym)
 			ret++;
 		i++;

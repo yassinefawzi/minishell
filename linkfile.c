@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/10 08:38:45 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 10:51:30 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,89 @@ int	quote_looper(char *str)
 	return (1);
 }
 
+int	count_space_for_redirection(char *str)
+{
+	int		i;
+	char	hol;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '>' || str[i] == '<')
+		{
+			hol = str[i];
+			if (str[i + 1] != hol || str[i - 1] != hol)
+			{
+				if (str[i + 1] != ' ' && str[i + 1] != '\t')
+					j++;
+				if (str[i - 1] != ' ' && str[i - 1] != '\t')
+					j++;
+			}
+		}
+		i++;
+	}
+	return (i + j);
+}
+char	*added_space(char *str, char hol)
+{
+	int		i;
+	int		j;
+	char	*ret;
+
+	if (!str || !hol)
+		return (0);
+	i = 0;
+	j = i;
+	ret = malloc(count_space_for_redirection(str) + 1);
+	while (str[i])
+	{
+		if (str[i + 1] == hol)
+		{
+			if (str[i] != ' ' && str[i] != '\t')
+			{
+				ret[j++] = str[i++];
+				ret[j++] = ' ';
+			}
+		}
+		else if (str[i] == hol && (str[i + 1] != ' ' && str[i] != '\t'))
+		{
+			ret[j++] = str[i++];
+			ret[j++] = ' ';
+		}
+		ret[j++] = str[i++];
+	}
+	ret[j] = 0;
+	return (ret);
+}
+
 t_args	*ft_lstnew_args(char *arg)
 {
 	t_args	*args;
 	int		i;
 	int		k;
+	int		hol;
 
 	k = 0;
 	i = 0;
-	if (!arg)
-		return (0);
 	while (arg[i])
 	{
-		if (arg[i] == 1)
-			arg[i] = '|';
+		if (arg[i] == '>' || arg[i] == '<')
+		{
+			hol = arg[i];
+			if (arg[i + 1] != hol && (arg[i + 1] != ' ' && arg[i + 1] != '\t'))
+			{
+				arg = added_space(arg, hol);
+			}
+			if (arg[i - 1] != hol && (arg[i - 1] != ' ' && arg[i - 1] != '\t'))
+				arg = added_space(arg, hol);
+		}
 		i++;
 	}
+	i = 0;
+	if (!arg)
+		return (0);
 	args = malloc(sizeof(t_args));
 	if (!args)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/10 08:50:40 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 10:55:01 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	check_for_space_error(char *str)
 t_args	*ret_com(char *str)
 {
 	t_args	*ret_args;
+	t_args	*tmp;
 	char	**args;
 	int		i;
 	int		check_for_double;
@@ -86,6 +87,7 @@ t_args	*ret_com(char *str)
 	ret_args = 0;
 	if (check_quotes(str) < 0 || check_for_brackets(str) < 0)
 		return (0);
+	hidden_symbols(str);
 	str = cleaned_spaces(str);
 	if (check_for_space_error(str) < 0)
 		return (0);
@@ -110,6 +112,14 @@ t_args	*ret_com(char *str)
 		ft_lstadd_back(&ret_args, ft_lstnew_args(args[i]));
 		ret_args->red = check_for_redirections(args[i]);
 		i++;
+	}
+	tmp = ret_args;
+	while (tmp)
+	{
+		i  = 0;
+		while (tmp->command[i])
+			return_symbol(tmp->command[i++]);
+		tmp = tmp->next;
 	}
 	i = 0;
 	while (args[i])
