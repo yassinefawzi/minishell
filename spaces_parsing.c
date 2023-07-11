@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:52:47 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/10 08:59:20 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 06:52:50 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,46 +153,23 @@ char	*cleaned_spaces(char *str)
 	i = 0;
 	j = 0;
 	k = 0;
+
 	ret = malloc(ft_spaces_len(str) + 1);
 	while (str[i])
 	{
-		if (str[i] == '\"' || str[i] == '\'')
+		if (str[i] == '\'' || str[i] == '"')
 		{
 			k = quote_len(str, i) + 1;
-			while (k > 0)
-			{
-				if (str[i] == '|')
-					str[i] = 1;
-				ret[j] = str[i];
-				i++;
-				j++;
-				k--;
-			}
+			while (k--)
+				ret[j++] = str[i++];
 			i++;
 		}
-		printf("str[%d] == %s, ret == %s\n", i, str + i, ret);
 		if (str[i] == ' ' || str[i] == '\t')
 		{
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
 				i++;
 		}
-		if (str[i])
-		{
-			if (str[i] == '|')
-			{
-				ret[j] = str[i];
-				j++;
-				i++;
-				while (str[i] == ' ' || str[i] == '\t')
-					i++;
-				
-			}
-			ret[j] = str[i];
-			i++;
-			j++;
-		}
+		ret[j++] = str[i++];
 	}
-	ret[j] = 0;
-	free(str);
-	return (ret);
+	return ret;
 }
