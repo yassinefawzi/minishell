@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/11 10:36:52 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 10:57:50 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ typedef struct t_args
 	int		red;
 	struct 	t_args	*next;
 }	t_args;
+
+typedef struct t_glo
+{
+	t_env	*env;
+	t_args	*args;
+}	t_glo;
+
+t_glo	glo;
 
 void	pwd(void);
 void	ft_exit(void);

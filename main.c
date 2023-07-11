@@ -6,11 +6,12 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/11 10:55:01 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/11 11:02:04 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 int	check_for_redirections(char *str)
 {
@@ -164,6 +165,8 @@ int main(int arc, char **arv, char **enva)
 		line = readline(currdir);
 		add_history(line);  
 		args = ret_com(line);
+		glo.args = args;
+		glo.env = envar;
 		ft_printer(args);
 		free(currdir);
 		ft_free(args);
