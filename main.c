@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/12 07:34:06 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/12 07:51:23 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	check_for_redirections(char *str)
 		{
 			if (str[i + 1] == '>')
 				return (3);
-			printf("OK\n");
 			return (1);
 		}
 		 if (str[i] == '<')
