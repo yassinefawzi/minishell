@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/12 07:51:23 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/12 08:52:42 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,21 @@ int	check_for_space_error(char *str)
 	i = 0;
 	while (str[i])
 	{
+		if (str[i] == '>')
+			if (str[i + 1] == '<')
+			{
+				error_message("parsing error\n");
+				return (-1);
+			}
+		i++;
+	}
+	i = 0;
+	while (str[i])
+	{
 		if (str[i] == '>' || str[i] == '<')
 		{
 			hol = str[i];
-			if (str[i + 2] == hol)
+			if ((str[i + 1] == ' ' && str[i + 2] == hol))
 			{
 				error_message("parsing error\n");
 				return (-1);
@@ -64,7 +75,7 @@ int	check_for_space_error(char *str)
 				i++;
 				while (str[i + 1] == ' ' || str[i + 1] == '\t')
 					i++;
-				if (str[i + 1] && str[i + 1] == hol)
+				if (str[i + 1] && (str[i + 1] == '>' || str[i + 1] == '<'))
 				{
 					error_message("parsing error\n");
 					return (-1);
@@ -114,7 +125,7 @@ t_args	*ret_com(char *str)
 		ft_lstadd_back(&ret_args, ft_lstnew_args(args[i]));
 		i++;
 	}
-	ret_index(ret_args);
+	//ret_index(ret_args);
 	tmp = ret_args;
 	while (tmp)
 	{
