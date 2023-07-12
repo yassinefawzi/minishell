@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/11 10:57:50 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/12 07:37:29 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct t_args
 {
 	char	**command;
 	int		red;
+	int		red_index;
 	struct 	t_args	*next;
 }	t_args;
 
@@ -56,6 +57,7 @@ void	free_list(t_env *glo);
 int		cleaned_len(char *str);
 t_env	*ft_lstnew(char *enva);
 int		check_quotes(char *str);
+void	ret_index(t_args *args);
 void	return_symbol(char *str);
 void	error_message(char *str);
 void	hidden_symbols(char *str);
@@ -72,6 +74,7 @@ int		len_of_pipes(char *str, int num);
 char	*fixed_pipes(char *str, int num);
 int		ft_strcmp(char *str, char *str1);
 char	*ft_strcpy(char *str, char *str1);
+int		check_for_redirections(char *str);
 int		bracket_counter(char *str, char sym);
 int		sym_check(char *str, char sym, char sym2);
 void	ft_lstadd_back(t_args **list, t_args *new);

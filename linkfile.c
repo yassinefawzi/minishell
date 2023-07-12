@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/11 10:51:30 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/12 07:35:28 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,5 +175,7 @@ t_args	*ft_lstnew_args(char *arg)
 	else
 		args->command = ft_split(arg, ' ');
 	args->next = 0;
+	args->red = check_for_redirections(arg);;
+	args->red_index = 0;
 	return (args);
 }

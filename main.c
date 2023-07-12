@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/11 11:02:04 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/12 07:34:06 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ int	check_for_redirections(char *str)
 		{
 			if (str[i + 1] == '>')
 				return (3);
+			printf("OK\n");
 			return (1);
 		}
-		else if (str[i] == '<')
+		 if (str[i] == '<')
 		{
 			if (str[i + 1] == '<')
 				return (4);
@@ -108,12 +109,13 @@ t_args	*ret_com(char *str)
 		i++;
 	}
 	i = 0;
+	int k = 0;
 	while (args[i])
 	{
 		ft_lstadd_back(&ret_args, ft_lstnew_args(args[i]));
-		ret_args->red = check_for_redirections(args[i]);
 		i++;
 	}
+	ret_index(ret_args);
 	tmp = ret_args;
 	while (tmp)
 	{
@@ -141,7 +143,8 @@ void	ft_printer(t_args *args)
 			printf("%s\n", args->command[i]);
 			i++;
 		}
-		printf("%d\n", args->red);
+		printf("red == %d\n", args->red);
+		printf("index == %d\n", args->red_index);
 		i = 0;
 		printf("-------------\n");
 		args = args->next;
