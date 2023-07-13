@@ -19,7 +19,7 @@ NAME = minishell
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a -fsanitize=address
+	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a
 clean:
 	$(RM) $(OBJS)
 

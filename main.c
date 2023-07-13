@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/13 11:34:30 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/13 12:52:13 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_args	*ret_com(char *str)
 	int		i;
 	int		check_for_double;
 
-	i = 0;
 	ret_args = 0;
 	if (check_quotes(str) < 0 || check_for_brackets(str) < 0)
 		return (0);
@@ -38,13 +37,13 @@ t_args	*ret_com(char *str)
 		str = fixed_pipes(str, check_for_double);
 	}
 	args = ft_split(str, '|');
+	i = 0;
 	while (args[i])
 	{
 		args[i] = ft_clean(args[i]);
 		i++;
 	}
 	i = 0;
-	int k = 0;
 	while (args[i])
 	{
 		ft_lstadd_back(&ret_args, ft_lstnew_args(args[i]));
@@ -63,6 +62,7 @@ t_args	*ret_com(char *str)
 	while (args[i])
 		free(args[i++]);
 	free(args);
+	free(str);
 	return (ret_args);
 }
 
@@ -116,4 +116,4 @@ int main(int arc, char **arv, char **enva)
 		free_list(envar);
 	}
 
-} 
+}

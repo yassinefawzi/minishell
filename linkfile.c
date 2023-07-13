@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/13 11:37:15 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/13 12:10:23 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ t_args	*ft_lstnew_args(char *arg)
 		args->command = ft_split(arg, ' ');
 	args->red = malloc(3 * sizeof(int *));
 	args->next = 0;
+	free(arg);
 	return (args);
 }
