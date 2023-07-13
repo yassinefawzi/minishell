@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 02:42:17 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/08 00:54:29 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/13 10:57:55 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	free_list(t_env *env)
 void	ft_free(t_args *args)
 {
 	int		i;
+	int		hol;
 	t_args	*tmp;
 	t_args	*tmp1;
 
@@ -37,10 +38,14 @@ void	ft_free(t_args *args)
 	i = 0;
 	while (tmp)
 	{
+		i = 0;
 		while (tmp->command[i])
 			free(tmp->command[i++]);
-		i = 0;
 		free(tmp->command);
+		i = 0;
+		while (i < 3)
+			free(tmp->red[i++]);
+		free(tmp->red);
 		tmp1 = tmp;
 		tmp = tmp->next;
 		free(tmp1);

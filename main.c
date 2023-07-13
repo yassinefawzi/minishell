@@ -6,86 +6,11 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/12 08:52:42 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/13 11:34:30 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-int	check_for_redirections(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '>')
-		{
-			if (str[i + 1] == '>')
-				return (3);
-			return (1);
-		}
-		 if (str[i] == '<')
-		{
-			if (str[i + 1] == '<')
-				return (4);
-			return (2);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	check_for_space_error(char *str)
-{
-	int		i;
-	int		j;
-	char	hol;
-
-	if (str[ft_strlen(str) - 1] == '>' || str[ft_strlen(str) - 1] == '<')
-	{
-		error_message("parsing error\n");
-		return (-1);
-	}
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '>')
-			if (str[i + 1] == '<')
-			{
-				error_message("parsing error\n");
-				return (-1);
-			}
-		i++;
-	}
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '>' || str[i] == '<')
-		{
-			hol = str[i];
-			if ((str[i + 1] == ' ' && str[i + 2] == hol))
-			{
-				error_message("parsing error\n");
-				return (-1);
-			}
-			if (str[i + 1] && (str[i + 1] == ' ' || str[i + 1] == '\t'))
-			{
-				i++;
-				while (str[i + 1] == ' ' || str[i + 1] == '\t')
-					i++;
-				if (str[i + 1] && (str[i + 1] == '>' || str[i + 1] == '<'))
-				{
-					error_message("parsing error\n");
-					return (-1);
-				}
-			}
-		}
-		i++;
-	}
-	return (1);
-}
 
 t_args	*ret_com(char *str)
 {
@@ -125,7 +50,7 @@ t_args	*ret_com(char *str)
 		ft_lstadd_back(&ret_args, ft_lstnew_args(args[i]));
 		i++;
 	}
-	//ret_index(ret_args);
+	ret_red(ret_args);
 	tmp = ret_args;
 	while (tmp)
 	{
@@ -141,21 +66,26 @@ t_args	*ret_com(char *str)
 	return (ret_args);
 }
 
-void	ft_printer(t_args *args)
+void	ft_printer(t_args *arg)
 {
-	int	i;
+	int		i;
+	int		hol;
+	t_args	*args;
 
 	i = 0;
+	args = arg;
 	while (args)
 	{
 		while (args->command[i])
+			printf("%s\n", args->command[i++]);
+		i = 0;
+		printf("num of red == %d\n", args->red[0][0]);
+		hol = args->red[0][0];
+		while (i < hol)
 		{
-			printf("%s\n", args->command[i]);
+			printf("red[%d] index == %d is: %d\n", i, args->red[2][i], args->red[1][i]);
 			i++;
 		}
-		printf("red == %d\n", args->red);
-		printf("index == %d\n", args->red_index);
-		i = 0;
 		printf("-------------\n");
 		args = args->next;
 	}

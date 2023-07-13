@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 22:49:26 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/12 07:32:52 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/13 11:33:11 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	hidden_symbols(char *str)
 					str[i] = 2;
 				else if (str[i] == '<')
 					str[i] = 3;
+				else if (str[i] == '$')
+					str[i] = 4;
 				i++;
 			}
 			i++;
@@ -83,39 +85,8 @@ void	return_symbol(char *str)
 			str[i] = '>';
 		else if (str[i] == 3)
 			str[i] = '<';
+		else if (str[i] == 4)
+			str[i] = '$';
 		i++;
-	}
-}
-
-void	ret_index(t_args *args)
-{
-	t_args	*tmp;
-	char	*str;
-	int		i;
-
-	if (!args)
-		return ;
-	i = 0;
-	tmp = args;
-	while (tmp)
-	{
- 		if (tmp->red > 0)
-		{
-			if (tmp->red == 1 || tmp->red == 3)
-			{
-				while (tmp->command[i][0] != '>')
-					i++;
-				tmp->red_index = i + 1;
-				i = 0;		
-			}
-			else if (tmp->red == 2 || tmp->red == 4)
-			{
-				while (tmp->command[i][0] != '<')
-					i++;
-				tmp->red_index = i + 1;
-				i = 0;
-			}
-		}
-		tmp = tmp->next;
 	}
 }

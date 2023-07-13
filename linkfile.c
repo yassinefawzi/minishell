@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/12 10:48:44 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/13 11:37:15 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,11 @@ void	ft_lstadd_back(t_args **list, t_args *new)
 	}
 }
 
-// char	*cleaned_quote(char *str)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*ret;
-
-// 	if (!str)
-// 		return (0);
-// 	i = 0;
-// 	j = 0;
-// 	ret = malloc(ft_strlen(str));
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '\"' || str[i] == '\'')
-// 			i++;
-// 		ret[j++] = str[i++];
-// 	}
-// 	ret[j] = 0;
-// 	return (ret);
-// }
-
 int	quote_looper(char *str)
 {
 	int	i;
 
+	//printf("OK\n");
 	i = 0;
 	while (str[i])
 	{
@@ -78,70 +58,6 @@ int	quote_looper(char *str)
 	return (1);
 }
 
-int	count_space_for_redirection(char *str)
-{
-	int		i;
-	char	hol;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == '>' || str[i] == '<')
-		{
-			hol = str[i];
-			if (str[i + 1] != hol || str[i - 1] != hol)
-			{
-				if (str[i + 1] != ' ' && str[i + 1] != '\t')
-					j++;
-				if (str[i - 1] != ' ' && str[i - 1] != '\t')
-					j++;
-			}
-		}
-		i++;
-	}
-	return (i + j);
-}
-char	*added_space(char *str)
-{
-	int		i;
-	int		j;
-	char	*ret;
-	char	hol;
-
-	if (!str)
-		return (0);
-	i = 0;
-	j = i;
-	ret = malloc(count_space_for_redirection(str) + 1);
-	while (str[i])
-	{
-		if (str[i + 1] == '>' || str[i + 1] == '<')
-		{
-			if ((str[i] != ' ' && str[i] != '\t' && str[i] != str[i + 1]))
-			{
-				ret[j++] = str[i++];
-				ret[j++] = ' ';
-			}
-		}
-		if (str[i] == '>' || str[i] == '<')
-		{
-			if (str[i + 1] != str[i])
-			{
-				if (str[i + 1] != ' ' && str[i + 1] != '\t')
-				{
-					ret[j++] = str[i++];
-					ret[j++] = ' ';
-				}
-			}
-		}
-		ret[j++] = str[i++];
-	}
-	ret[j] = 0;
-	return (ret);
-}
-
 t_args	*ft_lstnew_args(char *arg)
 {
 	t_args	*args;
@@ -152,7 +68,6 @@ t_args	*ft_lstnew_args(char *arg)
 	k = 0;
 	i = 0;
 	arg = added_space(arg);
-	printf("arg == %s\n", arg);
 	i = 0;
 	if (!arg)
 		return (0);
@@ -169,8 +84,7 @@ t_args	*ft_lstnew_args(char *arg)
 	}
 	else
 		args->command = ft_split(arg, ' ');
+	args->red = malloc(3 * sizeof(int *));
 	args->next = 0;
-	args->red = check_for_redirections(arg);
-	args->red_index = 0;
 	return (args);
 }
