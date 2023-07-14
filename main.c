@@ -6,16 +6,149 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/13 12:52:13 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/14 12:58:43 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	check_for_var(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	find_name_len(char *str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1])
+		{
+			while (ft_isalnum(str[i] > 0))
+			{
+				j++;
+				i++;
+			}
+			return (j);
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	*find_name(char *str)
+{
+	int		i;
+	int		j;
+	char	*ret;
+
+	i = 0;
+	j = 0;
+	ret = malloc(find_name_len(str) + 1);
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1])
+		{
+			while (ft_isalnum(str[i] > 0))
+				ret[j++] = str[i++];
+			ret[j] = 0;
+			return (ret);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	num_of_vars(char *str)
+{
+	int	i;
+	int	j;
+	int	ret;
+
+	i = 0;
+	ret = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			if (str[i + 1] == '$')
+			{
+				while (str[i] == '$')
+					i++;
+				while (str[i] && str[i] != '$')
+					i++;
+			}
+			if (str[i] == '$' && str[i + 1])
+				ret++;
+		}
+		i++;
+	}
+	return (ret);
+}
+
+t_expand	*expand_it(char *str)
+{
+	int			i;
+	int			j;
+	int			hol;
+	t_expand	*expand;
+
+	i = 0;
+	j = 0;
+	expand->num = num_of_vars(str);
+	expand->len = malloc(expand->num);
+	expand->name = malloc(expand->num + 1);
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1])
+		{
+			expand->len[j] = find_name_len(str + i);
+			expand->name[j] = find_name(str + 1);
+		}
+	}
+
+}
+
+char	*check_var(char *str)
+{
+	int		i;
+	int		j;
+	char	**tmp;
+
+	i = 0;
+	j = 0;
+	tmp = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			tmp = ft_split(str, ' ');
+		}
+		i++;
+	}
+	i = 0;
+	while (tmp[i])
+		tmp[i] = expand_it(tmp[i++]);
+}
+
 t_args	*ret_com(char *str)
 {
 	t_args	*ret_args;
 	t_args	*tmp;
+	char	*tmp_line;
 	char	**args;
 	int		i;
 	int		check_for_double;
@@ -55,7 +188,11 @@ t_args	*ret_com(char *str)
 	{
 		i  = 0;
 		while (tmp->command[i])
-			return_symbol(tmp->command[i++]);
+		{
+			return_symbol(tmp->command[i]);
+			//*tmp->command[i] = check_var(tmp->command[i]);
+			i++;
+		}
 		tmp = tmp->next;
 	}
 	i = 0;
@@ -110,7 +247,7 @@ int main(int arc, char **arv, char **enva)
 		args = ret_com(line);
 		glo.args = args;
 		glo.env = envar;
-		ft_printer(args);
+		//ft_printer(args);
 		free(currdir);
 		ft_free(args);
 		free_list(envar);

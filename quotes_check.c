@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 23:40:50 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/10 08:30:57 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/14 08:00:25 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	quote_len(char	*str, int i)
 
 int	check_quotes(char *str)
 {
-
 	if (check_single_quote(str) < 0)
 	{
 		error_message("quote error\n");
