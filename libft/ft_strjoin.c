@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 20:47:46 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/30 01:02:59 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/15 07:30:20 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,25 @@ char	*ft_strjoin(char *s1, char const *s2)
 	int		j;
 	char	*s;
 
-	if ((s1 == NULL || s2 == NULL))
-		return (NULL);
 	s = (char *)malloc(((ft_strlen(s1) + ft_strlen(s2) + 1)));
 	if (s == NULL)
 		return (NULL);
 	j = 0;
-	while (s1[j])
+	while (s1 && s1[j])
 	{
 		s[j] = s1[j];
 		j++;
 	}
-	free(s1);
+	//if (s1)
+		//free(s1);
 	i = 0;
-	while (s2[i])
+	while (s2 && s2[i])
 	{
 		s[j + i] = s2[i];
 		i++;
 	}
+	//if (s2)
+		//free((char *)s2);
 	s[j + i] = '\0';
 	return (s);
 }

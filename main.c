@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/14 12:58:43 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/15 08:30:11 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,13 @@ int	find_name_len(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1])
+		while (ft_isalnum(str[i]) > 0)
 		{
-			while (ft_isalnum(str[i] > 0))
-			{
-				j++;
-				i++;
-			}
-			return (j);
+			j++;
+			i++;
 		}
+		if (j > 0)
+			return (j);
 		i++;
 	}
 	return (0);
@@ -62,8 +60,11 @@ char	*find_name(char *str)
 	{
 		if (str[i] == '$' && str[i + 1])
 		{
-			while (ft_isalnum(str[i] > 0))
+			i++;
+			while (ft_isalnum(str[i]) > 0)
+			{
 				ret[j++] = str[i++];
+			}
 			ret[j] = 0;
 			return (ret);
 		}
@@ -99,49 +100,76 @@ int	num_of_vars(char *str)
 	return (ret);
 }
 
-t_expand	*expand_it(char *str)
+int	pre_varlen(char *str)
 {
-	int			i;
-	int			j;
-	int			hol;
-	t_expand	*expand;
+	int	i;
+	int	ret;
+
+	ret = 0;
+	i = 0;
+	
+	while (str[i] && str[i] != '$')
+	{
+		ret++;
+		i++;
+	}
+	return (ret);
+}
+
+char	*ret_var(t_env *env, char *name)
+{
+	int		i;
+	t_env	*tmp;
 
 	i = 0;
-	j = 0;
-	expand->num = num_of_vars(str);
-	expand->len = malloc(expand->num);
-	expand->name = malloc(expand->num + 1);
-	while (str[i])
+	tmp = env;
+	name = ft_strjoin(name, "=");
+	while (tmp)
 	{
-		if (str[i] == '$' && str[i + 1])
+		if (ft_strlen(tmp->name) == ft_strlen(name))
 		{
-			expand->len[j] = find_name_len(str + i);
-			expand->name[j] = find_name(str + 1);
+			if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
+				return (tmp->value);
 		}
+		tmp = tmp->next;
 	}
-
+	return ("\n");
 }
 
 char	*check_var(char *str)
 {
 	int		i;
 	int		j;
+	int		k;
 	char	**tmp;
+	char	*ret;
 
 	i = 0;
 	j = 0;
-	tmp = 0;
+	k = 0;
+	k = pre_varlen(str);
+	if (k == ft_strlen(str))
+		return (str);
+	ret = malloc(pre_varlen(str) + 1);
+	ret = 0;
 	while (str[i])
 	{
-		if (str[i] == '$')
+		ret = ft_strjoin(ret, ft_substr(str, i, k));
+		i += k;
+		printf("ret = %s, pre i == %d, k == %d, new i == %d\n", ret, (i - k), k, i);
+		if (str[i] && str[i] == '$' && str[i + 1])
 		{
-			tmp = ft_split(str, ' ');
+			ret = ft_strjoin(ret, ret_var(glo.env, find_name(str)));
+			i += find_name_len(str + i);
+			i++;
+			if (str[i])
+				k = pre_varlen(*(&str + i));
 		}
-		i++;
+		ret = ft_strjoin(ret, ft_substr(str, i, k));
+		i += k;
 	}
-	i = 0;
-	while (tmp[i])
-		tmp[i] = expand_it(tmp[i++]);
+	free(str);
+	return (ret);
 }
 
 t_args	*ret_com(char *str)
@@ -190,7 +218,7 @@ t_args	*ret_com(char *str)
 		while (tmp->command[i])
 		{
 			return_symbol(tmp->command[i]);
-			//*tmp->command[i] = check_var(tmp->command[i]);
+			tmp->command[i] = check_var(tmp->command[i]);
 			i++;
 		}
 		tmp = tmp->next;
@@ -244,10 +272,10 @@ int main(int arc, char **arv, char **enva)
 		envar = ret_env(enva);
 		line = readline(currdir);
 		add_history(line);  
-		args = ret_com(line);
 		glo.args = args;
 		glo.env = envar;
-		//ft_printer(args);
+		args = ret_com(line);
+		ft_printer(args);
 		free(currdir);
 		ft_free(args);
 		free_list(envar);

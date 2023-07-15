@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/14 12:58:18 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/15 03:01:43 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,6 @@ typedef struct t_args
 	struct 	t_args	*next;
 }	t_args;
 
-typedef struct t_expand
-{
-	char	**name;
-	int		*len;
-	int		num;
-}	t_expand;
 
 typedef struct t_glo
 {
