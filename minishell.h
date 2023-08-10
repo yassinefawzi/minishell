@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/17 08:29:28 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/10 15:01:17 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct t_glo
 	int		**expnd;
 	int		exp_build;
 }	t_glo;
-
 t_glo	glo;
 
 void	pwd(void);
