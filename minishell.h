@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/10 15:01:17 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/10 15:11:27 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct t_args
 	int		**red;
 	struct 	t_args	*next;
 }	t_args;
-
 
 typedef struct t_glo
 {

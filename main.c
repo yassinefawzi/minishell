@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/17 08:23:31 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/10 15:11:42 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,7 +294,7 @@ int main(int arc, char **arv, char **enva)
 		glo.env = envar;
 		args = ret_com(line);
 		glo.args = args;
-		export(args);
+		export(glo.args->command[1]);
 		ft_printer(args);
 		free(currdir);
 		ft_free(args);
