@@ -6,88 +6,115 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/06/29 01:02:33 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/17 08:29:44 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	echo(t_args args)
-// {
-// 	int	i;
-// 	int	j;
+void	echo(t_args *args)
+{
+	int		i;
+	int		j;
+	int		k;
+	t_args	*tmp;
 
-// 	if (!args.flags)
-// 		printf("%s\n", args.command);
-// 	if (!args.command)
-// 		printf("\n");
-// 	else
-// 	{
-// 		i = 1;
-// 		j = 0;
-// 		while (args.flags[i])
-// 		{
-// 			if (args.flags[i] != 'n')
-// 			{
-// 				j++;
-// 				break ;
-// 			}
-// 			i++;
-// 		}
-// 		if (j == 1)
-// 			printf("%s %s\n", args.command, args.flags);
-// 		else
-// 			printf("%s", args.command);
-// 	}
-// }
+	tmp = args;
+	i = 1;
+	j = 1;
+	k = 0;
+	while (tmp->command[i])
+	{
+		if (tmp->command[i][0] == '-')
+		{
+			while (tmp->command[i][j] == 'n')
+				j++;
+			if (tmp->command[i][j] != 'n' && tmp->command[i][j] != '\0')
+				break ;
+			k = 1;
+		}
+		if (tmp->command[i][0] != '-')
+			break ;
+		j = 0;
+		i++;
+	}
+	if (k == 0)
+		i = 1;
+	if (tmp->command[i] && tmp->red[0][0] == 0)
+	{
+		if (k > 0)
+		{
+			while (tmp->command[i])
+			{
+				if (tmp->command[i + 1])
+					printf("%s ", tmp->command[i++]);
+				else
+					printf("%s", tmp->command[i++]);
+			}
+		}
+		else
+		{
+			while (tmp->command[i])
+			{
+				if (tmp->command[i + 1])
+					printf("%s ", tmp->command[i++]);
+				else
+					printf("%s", tmp->command[i++]);
+			}
+			printf("\n");
+		}
+	}
+	// else
+	// 	redirect();
+}
 
-// void	cd(t_args args)
-// {
-// 	int		val;
-// 	char	*str;
-// 	char	*str1;
-// 	int		i;
-// 	int		j;
+void	cd(t_args *args)
+{
+	int		val;
+	char	*str;
+	char	*str1;
+	int		i;
+	int		j;
 
-// 	i = 0;
-// 	j = 0;
-// 	if (args.command == NULL)
-// 	{
-// 		str = getcwd(0, 0);
-// 		while (j != 3)
-// 		{
-// 			if (str[i] == '/')
-// 				j++;
-// 			i++;
-// 		}
-// 		str1 = malloc(i);
-// 		ft_strlcpy(str1, str, i);
-// 		free(str);
-// 		val = chdir(str1);
-// 		if (val < 0)
-// 		{
-// 			perror("cd");
-// 			return ;
-// 		}
-// 		return ;
-// 	}
-// 	val = chdir(args.command);
-// 	if (val < 0)
-// 	{
-// 		str = getcwd(0, 0);
-// 		i = ft_strlen(str);
-// 		j = ft_strlen(args.command);
-// 		str1 = malloc(i + j + 1);
-// 		str1 = ft_strcpy(str1, str);
-// 		str1[i] = '/';
-// 		str1[i + 1] = '\0';
-// 		str1 = ft_strjoin(str1, args.command);
-// 		val = chdir(str1);
-// 		free(str1);
-// 		if (val < 0)
-// 			perror("cd");
-// 	}
-// }
+	i = 0;
+	j = 0;
+	if (args->command[1] == NULL)
+	{
+		str = getcwd(0, 0);
+		while (j != 3)
+		{
+			if (str[i] == '/')
+				j++;
+			i++;
+		}
+		str1 = malloc(i);
+		ft_strlcpy(str1, str, i);
+		free(str);
+		val = chdir(str1);
+		if (val < 0)
+		{
+			perror("cd");
+			return ;
+		}
+		return ;
+	}
+	val = chdir(args->command[1]);
+	if (val < 0)
+	{
+		str = getcwd(0, 0);
+		i = ft_strlen(str);
+		j = ft_strlen(args->command[1]);
+		str1 = malloc(i + j + 1);
+		str1 = ft_strcpy(str1, str);
+		str1[i] = '/';
+		str1[i + 1] = '\0';
+		str1 = ft_strjoin(str1, args->command[1]);
+		val = chdir(str1);
+		free(str1);
+		if (val < 0)
+			perror("cd");
+	}
+}
 
 void	pwd(void)
 {
@@ -103,34 +130,92 @@ void	ft_exit(void)
 	exit(0);
 }
 
-void	env(t_env *enva)
+void	env(void)
 {
-	int	i;
+	t_env	*tmp;
 
-	i = 0;
-	while (enva)
+	tmp = glo.env;
+	while (tmp)
 	{
-		printf("%s", enva->name);
-		printf("%s\n", enva->value);
-		enva = enva->next;
+		printf("%s  ", tmp->name);
+		printf("%s\n", tmp->value);
+		tmp = tmp->next;
 	}
 }
 
-void ft_unset(char **envp, char *var_name)
+void ft_unset(char *str)
 {
-    int i = 0;
-    while (envp[i])
-    {
-        if (ft_strcmp(envp[i], var_name) == 0)
-        {
-            free(envp[i]);
-            while (envp[i])
-            {
-                envp[i] = envp[i + 1];
-                i++;
-            }
-            return;
-        }
-        i++;
-    }
+	t_env	*tmp;
+	t_env	*tmp1;
+
+	tmp = glo.env;
+	str = ft_strjoin(str, "=");
+	while (tmp)
+	{
+		if (ft_strlen(tmp->name) == ft_strlen(str))
+		{
+			if (ft_strncmp(tmp->name, str, ft_strlen(str)) == 0)
+				break ;
+		}
+		tmp1 = tmp;
+		tmp = tmp->next;
+	}
+	if (tmp->next)
+		tmp1 = tmp->next;
+	else
+		tmp1 = 0;
+	free(tmp->name);
+	free(tmp->value);
+	free(tmp);
+}
+
+void	export(char *str)
+{
+	t_env	*tmp;
+	t_args	*tmp1;
+	t_env	*ret;
+	char	**hol;
+	int		i;
+
+	i = 2;
+	tmp = glo.env;
+	if (!str)
+	{
+		while (tmp)
+		{
+			printf("declare -x ");
+			printf("%s", tmp->name);
+			printf("%s\n", tmp->value);
+			tmp = tmp->next;
+		}
+		return ;
+	}
+	hol = ft_split(str, '=');
+	while(hol[i])
+		hol[1] = ft_strjoin(hol[1], hol[i++]);
+	hol[0] = ft_strjoin(hol[0], "=");
+	i = 0;
+	while (tmp->next)
+	{
+		if (ft_strlen(tmp->name) == ft_strlen(hol[0]))
+		{
+			if (ft_strncmp(tmp->name, hol[0], ft_strlen(hol[0])) == 0)
+			{
+				i = 1;
+				break ;
+			}
+		}
+		tmp = tmp->next;
+	}
+	if (i == 1)
+	{
+		free(tmp->value);
+		tmp->value = ft_substr(hol[1], 0, ft_strlen(hol[1]));
+		return ;
+	}
+	ret = malloc(sizeof(t_env));
+	ret->name = hol[0];
+	ret->value = hol[1];
+	ret->next = 0;
+	tmp->next = ret;
 }

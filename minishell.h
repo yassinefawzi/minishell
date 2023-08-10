@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/15 03:01:43 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/07/17 08:29:28 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,17 @@ typedef struct t_glo
 	t_env	*env;
 	t_args	*args;
 	int		**expnd;
+	int		exp_build;
 }	t_glo;
 
 t_glo	glo;
 
 void	pwd(void);
 void	ft_exit(void);
-void	cd(t_args args);
-void	env(t_env *enva);
-void	echo(t_args args);
+void	cd(t_args *args);
+void	env(void);
+void	echo(t_args *args);
+void	export(char *str);
 int		val_len(char *str);
 char	*env_val(char *str);
 char	*env_name(char *str);
