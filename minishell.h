@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/10 15:11:27 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 02:21:31 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-#include <readline/readline.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft/libft.h"
+# include <fcntl.h>
+#include <sys/wait.h>
 
 typedef struct t_env
 {
@@ -30,6 +33,8 @@ typedef struct t_args
 {
 	char	**command;
 	int		**red;
+	int		*fd;
+	int		file;
 	struct 	t_args	*next;
 }	t_args;
 
@@ -40,7 +45,7 @@ typedef struct t_glo
 	int		**expnd;
 	int		exp_build;
 }	t_glo;
-t_glo	glo;
+extern t_glo	glo;
 
 void	pwd(void);
 void	ft_exit(void);
@@ -66,6 +71,7 @@ void	error_message(char *str);
 void	hidden_symbols(char *str);
 int		ft_spaces_len(char	*str);
 int		check_if_valid(char *str);
+void    execution(void);
 char	*cleaned_spaces(char *str);
 t_args	*ft_lstnew_args(char *arg);
 int		check_for_pipes(char *str);

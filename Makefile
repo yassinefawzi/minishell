@@ -9,21 +9,23 @@ SRCS =	commands/commands.c \
 		spaces_parsing.c \
 		pipes.c \
 		brackets.c \
-		red.c
-
-OBJS = $(SRCS:.c=.o)
+		red.c \
+		execution/execution.c
 
 RM = rm -f
 NAME = minishell
+# CFLAGS = -g3 -fsanitize=address
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	cc $(OBJS) -o $(NAME) -lreadline libft/libft.a -g3 -fsanitize=address
+$(NAME):
+	make -C ./libft
+	cc $(CFLAGS) $(SRCS) -o $(NAME) -lreadline libft/libft.a
 clean:
-	$(RM) $(OBJS)
+	make -C ./libft clean
 
 fclean:			clean
+	make -C ./libft fclean
 	$(RM) $(NAME)
 
 re: fclean $(NAME)

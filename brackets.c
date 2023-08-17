@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 03:48:29 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/13 12:09:38 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 02:27:06 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,9 @@ int	check_for_brackets(char *str)
 	int		i;
 	char	*syms;
 
-	syms = malloc(8);
-	syms = "()[]{}`";
+	syms = ft_strdup("()[]{}`");
 	i = 0;
-	while (syms[i] && i < 8)
+	while (syms[i] && i < 6)
 	{
 		if (sym_check(str, syms[i], syms[i + 1]) < 0)
 		{
@@ -71,5 +70,6 @@ int	check_for_brackets(char *str)
 		}
 		i += 2;
 	}
+	free(syms);
 	return (1);
 }

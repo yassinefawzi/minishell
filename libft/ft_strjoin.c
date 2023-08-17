@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 20:47:46 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/15 07:30:20 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 02:12:44 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ char	*ft_strjoin(char *s1, char const *s2)
 		s[j] = s1[j];
 		j++;
 	}
-	//if (s1)
-		//free(s1);
+	if (s1)
+		free(s1);
 	i = 0;
 	while (s2 && s2[i])
 	{
