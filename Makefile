@@ -11,11 +11,11 @@ SRCS =	commands/commands.c \
 		brackets.c \
 		red.c \
 		execution/execution.c \
-		fd.c \
+		fd.c
 
 RM = rm -f
 NAME = minishell
-CFLAGS = -g3 -fsanitize=address
+# CFLAGS = -g3 -fsanitize=address
 
 all: $(NAME)
 

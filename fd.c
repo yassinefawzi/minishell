@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 00:23:34 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 21:07:39 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 23:51:39 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ret_fd(void)
 {
 	int		i;
 	t_args	*tmp;
+	int failure = 0;
 	int		hol;
 
 	i = 0;
@@ -37,23 +38,38 @@ void	ret_fd(void)
 			{
 				if (tmp->red[1][i] == 1)
 				{
-					tmp->fd[i] = open(tmp->command[tmp->red[2][i]], O_CREAT ,0664);
+					tmp->fd[i] = open(tmp->command[tmp->red[2][i]], O_CREAT | O_TRUNC | O_RDWR ,0664);
 					if (tmp->fd[i] == -1)
+					{
 						fd_error(tmp->command[tmp->red[2][i]]);
+						tmp->flag_file = -1;
+						break;
+					}
+					tmp->file = tmp->fd[i];
 				}
-				if (tmp->red[1][i] == 2)
+				else if (tmp->red[1][i] == 2)
 				{
 					tmp->fd[i] = open(tmp->command[tmp->red[2][i]], O_RDONLY);
 					if (tmp->fd[i] == -1)
+					{
 						fd_error(tmp->command[tmp->red[2][i]]);
+						tmp->flag_file = -1;
+						break;
+					}
+					tmp->filein = tmp->fd[i];
 				}
-				if (tmp->red[1][i] == 3)
+				else if (tmp->red[1][i] == 3)
 				{
-					tmp->fd[i] = open(tmp->command[tmp->red[2][i]], O_CREAT | O_WRONLY | O_APPEND, 0644);
+					tmp->fd[i] = open(tmp->command[tmp->red[2][i]], O_CREAT | O_RDWR | O_APPEND, 0644);
 					if (tmp->fd[i] == -1)
+					{
 						fd_error(tmp->command[tmp->red[2][i]]);
+						tmp->flag_file = -1;
+						break;
+					}
+					tmp->file = tmp->fd[i];
 				}
-				if (tmp->red[1][i] == 4)
+				else if (tmp->red[1][i] == 4)
 				{
 					tmp->fd[i] = open("heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 					if (tmp->fd[i] == -1)
@@ -64,12 +80,10 @@ void	ret_fd(void)
 			}
 		}
 		else
+		{
+			tmp->filein = -1;
 			tmp->file = -1;
-		i = 0;
-		if (tmp->red[0][0] > 0)
-			tmp->file = tmp->fd[tmp->red[0][0] - 1];
-		else
-			tmp->file = -1;
+		}
 		tmp = tmp->next;
 	}
 }

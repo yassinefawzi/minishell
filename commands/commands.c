@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/10 15:16:55 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 22:47:39 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void	pwd(void)
 
 void	ft_exit(void)
 {
+	ft_putendl_fd("gggggggsdagdash", 2);
 	exit(0);
 }
 

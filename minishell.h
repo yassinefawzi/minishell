@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 21:04:33 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/18 00:18:55 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct t_args
 	int		**red;
 	int		*fd;
 	int		file;
+	int		filein;
+	int		flag_file;
 	struct 	t_args	*next;
 }	t_args;
 
@@ -42,8 +44,9 @@ typedef struct t_glo
 {
 	t_env	*env;
 	t_args	*args;
-	int		**expnd;
-	int		exp_build;
+	// int		**expnd;
+	// int		exp_build;
+	int exit_status;
 }	t_glo;
 extern t_glo	glo;
 

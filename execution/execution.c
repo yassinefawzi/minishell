@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 00:19:43 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 21:22:51 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/18 00:20:07 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void    execution(void)
     t_args  *tmp;
     int     i;
     int     id;
-    int     fd[2];
+    int     fd[2] = {-1, -1};
 	int		tmp_fd;
 	int save_fds[2];
 	char	**pathed;
@@ -110,7 +110,7 @@ void    execution(void)
 	int *pids = malloc(sizeof(int) * ft_size_args());
     while (tmp)
     {
-		if (tmp->next)
+		if (ft_size_args() > 1)
         	pipe(fd);
         id = fork();
 		if (id < 0)
@@ -120,31 +120,22 @@ void    execution(void)
 		}
 		pids[flag] = id;
 		if (id == 0)
-		{	
-			if (tmp->next)
-			{
-				close(fd[0]);
-				if (tmp->red[0][0] > 0 && (tmp->red[1][tmp->red[0][0] - 1] == 1 || tmp->red[1][tmp->red[0][0] - 1] == 3))
-					dup2(tmp->file, STDOUT_FILENO);
-				else
-					dup2(fd[1], STDOUT_FILENO);
-			}
-			else if (tmp->red[0][0] > 0)
-			{
-				if (tmp->red[0][0] > 0 && (tmp->red[1][tmp->red[0][0] - 1] == 1 || tmp->red[1][tmp->red[0][0] - 1] == 3))
-				{
-					dup2(tmp->file, STDOUT_FILENO);
-				}
-			}
+		{
+			if (tmp->flag_file == -1)
+				exit(1);
+			// redirect output
+			if (tmp->file > 0)
+				dup2(tmp->file, 1);
+			else if (tmp->next)
+				dup2(fd[1], 1);
 			else
 				close(fd[1]);
-			if (flag > 0)	
-			{
-				if (tmp->red[0][0] > 0 && (tmp->red[1][tmp->red[0][0] - 1] == 2 || tmp->red[1][tmp->red[0][0] - 1] == 4))
-					dup2(tmp_fd, tmp->file);
-				else
-					dup2(tmp_fd, STDIN_FILENO);
-			}
+			close(fd[0]);
+			// redirect input
+			if (tmp->filein > 0)
+				dup2(tmp->filein, 0);
+			else if (flag > 0)
+				dup2(tmp_fd, STDIN_FILENO);
 			close(fd[0]);
 			hol = malloc((array_len(tmp->command) + 1) * sizeof(char *));
 			while (tmp->command[i])
@@ -178,12 +169,11 @@ void    execution(void)
 			perror("Error. ");
 			exit(5);
 		}
-		i = 0;
 		if (tmp_fd != -1)
 			close(tmp_fd);
-		if (ft_size_args() > 1)
+		close(fd[1]);
+		if (tmp->next)
 		{
-			close(fd[1]);
 			close(tmp_fd);
 			tmp_fd = fd[0];
 		}
@@ -191,11 +181,16 @@ void    execution(void)
 		tmp = tmp->next;
 	}
 	i = 0;
+	int status;
 	while (i < ft_size_args())
 	{
-		waitpid(pids[i], NULL, 0);
+		waitpid(pids[i], &status, 0);
 		i++;
 	}
+	if (WIFEXITED(status))
+		glo.exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		glo.exit_status = 128 + WTERMSIG(status);
 	if (ft_size_args() > 0)
 		free(pids);
 	dup2(save_fds[0], 0);
