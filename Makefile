@@ -10,22 +10,23 @@ SRCS =	commands/commands.c \
 		pipes.c \
 		brackets.c \
 		red.c \
-		execution/execution.c
+		execution/execution.c \
+		fd.c \
 
 RM = rm -f
 NAME = minishell
-# CFLAGS = -g3 -fsanitize=address
+CFLAGS = -g3 -fsanitize=address
 
 all: $(NAME)
 
 $(NAME):
-	make -C ./libft
-	cc $(CFLAGS) $(SRCS) -o $(NAME) -lreadline libft/libft.a
+#	make -C ./libft
+	clang $(CFLAGS) $(SRCS) -o $(NAME) -lreadline libft/libft.a
 clean:
 	make -C ./libft clean
 
 fclean:			clean
-	make -C ./libft fclean
+#	make -C ./libft fclean
 	$(RM) $(NAME)
 
 re: fclean $(NAME)

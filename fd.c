@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 00:23:34 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 02:57:19 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 21:07:39 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ void	ret_fd(void)
 			}
 		}
 		else
-			tmp->fd[0] = -1;
+			tmp->file = -1;
 		i = 0;
-		glo.args->file = tmp->fd[hol];
+		if (tmp->red[0][0] > 0)
+			tmp->file = tmp->fd[tmp->red[0][0] - 1];
+		else
+			tmp->file = -1;
 		tmp = tmp->next;
 	}
 }

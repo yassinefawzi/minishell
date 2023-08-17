@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 03:04:47 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 21:03:46 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,11 +301,12 @@ int main(int arc, char **arv, char **enva)
 		glo.env = envar;
 		args = ret_com(line);
 		glo.args = args;
+		ret_fd();
 		execution();
+		close_fd();
 		//ft_printer(args);
 		// free(currdir);
 		ft_free(args);
-		printf("next\n");
 	}
 	free_list(envar);
 }

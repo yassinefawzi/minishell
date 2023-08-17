@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 02:21:31 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 21:04:33 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	hidden_symbols(char *str);
 int		ft_spaces_len(char	*str);
 int		check_if_valid(char *str);
 void    execution(void);
+void	ret_fd(void);
+void	close_fd(void);
 char	*cleaned_spaces(char *str);
 t_args	*ft_lstnew_args(char *arg);
 int		check_for_pipes(char *str);

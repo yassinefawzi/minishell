@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:52:47 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/13 12:48:56 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 17:11:22 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,15 +133,21 @@ int	ft_spaces_len(char	*str)
 		}
 		if (str[i] == ' ' || str[i] == '\t')
 		{
-			while (str[i + 1] == ' ' || str[i + 1] == '\t')
+			while (str[i + 1] && (str[i + 1] == ' ' || str[i + 1] == '\t'))
 				i++;
 		}
 		if (str[i])
 			i++;
 		ret++;
 	}
-	if (str[i - 1] == ' ' || str[i - 1] == '\t')
-		ret--;
+	if (str)
+	{
+		if (i > 0)
+		{
+			if (str[i - 1] == ' ' || str[i - 1] == '\t')
+				ret--;
+		}
+	}
 	return (ret);
 }
 
@@ -161,7 +167,7 @@ char	*cleaned_spaces(char *str)
 	while (str[i])
 	{
 		if (!str[i + 1]  && (str[i] == ' ' || str[i] == '\t'))
-			i++;
+				break ;
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			k = quote_len(str, i) + 1;

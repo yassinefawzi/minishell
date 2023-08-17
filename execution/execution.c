@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 00:19:43 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 03:18:58 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/17 21:22:51 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,15 @@ char **lst_to_env(void)
 	i = 0;
 	return (ret);	
 }
+int		array_len(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 void    execution(void)
 {
@@ -85,9 +94,14 @@ void    execution(void)
     int     id;
     int     fd[2];
 	int		tmp_fd;
+	int save_fds[2];
 	char	**pathed;
 	char **lst_env = lst_to_env();
+	char	**hol;
 
+	save_fds[0] = dup(STDIN_FILENO);
+	save_fds[1] = dup(STDOUT_FILENO);
+	hol = 0;
 	pathed = ft_split(look_for_path(), ':');
 	i = 0;
     tmp = glo.args;
@@ -96,11 +110,8 @@ void    execution(void)
 	int *pids = malloc(sizeof(int) * ft_size_args());
     while (tmp)
     {
-		if (flag > 0)
-		{
-			printf("pipe\n");
+		if (tmp->next)
         	pipe(fd);
-		}
         id = fork();
 		if (id < 0)
 		{
@@ -110,14 +121,41 @@ void    execution(void)
 		pids[flag] = id;
 		if (id == 0)
 		{	
-			// check if there is infiles and outfiles
-			if (tmp->next != NULL)
-				dup2(fd[1], 1);
+			if (tmp->next)
+			{
+				close(fd[0]);
+				if (tmp->red[0][0] > 0 && (tmp->red[1][tmp->red[0][0] - 1] == 1 || tmp->red[1][tmp->red[0][0] - 1] == 3))
+					dup2(tmp->file, STDOUT_FILENO);
+				else
+					dup2(fd[1], STDOUT_FILENO);
+			}
+			else if (tmp->red[0][0] > 0)
+			{
+				if (tmp->red[0][0] > 0 && (tmp->red[1][tmp->red[0][0] - 1] == 1 || tmp->red[1][tmp->red[0][0] - 1] == 3))
+				{
+					dup2(tmp->file, STDOUT_FILENO);
+				}
+			}
 			else
 				close(fd[1]);
-			if (flag > 0)
-				dup2(tmp_fd, 0);
+			if (flag > 0)	
+			{
+				if (tmp->red[0][0] > 0 && (tmp->red[1][tmp->red[0][0] - 1] == 2 || tmp->red[1][tmp->red[0][0] - 1] == 4))
+					dup2(tmp_fd, tmp->file);
+				else
+					dup2(tmp_fd, STDIN_FILENO);
+			}
 			close(fd[0]);
+			hol = malloc((array_len(tmp->command) + 1) * sizeof(char *));
+			while (tmp->command[i])
+			{
+				if (tmp->command[i][0] == '>' || tmp->command[i][0] == '<')
+					break ;
+				hol[i] = ft_strdup(tmp->command[i]);
+				i++;
+			}
+			hol[i] = 0;
+			i = 0;
 			while(pathed[i])
 			{
 				pathed[i] = ft_strjoin(pathed[i], "/");
@@ -136,36 +174,41 @@ void    execution(void)
 				ft_putstr_fd("Error, path not found.\n", 2);
 				exit (2);
 			}
-			if (tmp->command[1] && tmp->command[1][0] == '-')
-			{
-				pathed[i] = ft_strjoin(pathed[i], " ");
-				pathed[i] = ft_strjoin(pathed[i], tmp->command[1]);
-			}
-			execve(pathed[i], &tmp->command[0], lst_env);
+			execve(pathed[i], hol, lst_env);
 			perror("Error. ");
 			exit(5);
 		}
-	// 	printf("tmp fd inside the while: %d\n", tmp_fd);
-	// 	if (tmp_fd != -1)
-	// 	{
-	// 		printf("tmp fddddddd : %d\n", tmp_fd);
-	// 		close(tmp_fd);
-	//	}
+		i = 0;
+		if (tmp_fd != -1)
+			close(tmp_fd);
 		if (ft_size_args() > 1)
 		{
+			close(fd[1]);
 			close(tmp_fd);
 			tmp_fd = fd[0];
-			close(fd[1]);
 		}
 		flag++;
 		tmp = tmp->next;
 	}
-	// printf("tmp fd : %d\n", tmp_fd);
 	i = 0;
 	while (i < ft_size_args())
 	{
-		printf("waiting child : %d\n", pids[i]);
 		waitpid(pids[i], NULL, 0);
 		i++;
 	}
+	if (ft_size_args() > 0)
+		free(pids);
+	dup2(save_fds[0], 0);
+	close(save_fds[0]);
+	dup2(save_fds[1], 1);
+	close(save_fds[1]);
+	i = 0;
+	while (lst_env[i])
+		free(lst_env[i++]);
+	i = 0;
+	while (pathed[i])
+		free(pathed[i++]);
+	i = 0;
+	free(pathed);
+	free(lst_env);	
 }
