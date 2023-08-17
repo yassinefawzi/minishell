@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/18 00:18:55 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/18 00:41:29 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct t_args
 	int		file;
 	int		filein;
 	int		flag_file;
+	char	*eof;
 	struct 	t_args	*next;
 }	t_args;
 

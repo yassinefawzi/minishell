@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 00:23:34 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 23:51:39 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/18 00:43:44 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ret_fd(void)
 				}
 				else if (tmp->red[1][i] == 4)
 				{
-					tmp->fd[i] = open("heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+					tmp->eof = tmp->red[2][i];
 					if (tmp->fd[i] == -1)
 						fd_error("heredoc");
 				}
