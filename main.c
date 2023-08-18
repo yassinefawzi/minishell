@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 22:48:45 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/18 06:33:30 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,28 +164,36 @@ char	*check_var(char *str)
 	while (str[i])
 	{
 		ret = ft_strjoin(ret, ft_substr(str, i, k));
-		if (str[i] == '$')
+		if (str[i] == '$' && str[i + 1] == '?')
 		{
-			ret = ft_strjoin(ret, ft_substr(ret_var(glo.env, find_name(str)),
-				0, ft_strlen(ret_var(glo.env, find_name(str)))));
-			i += find_name_len(str + i) + 1;
+			ret = ft_strjoin(ret, ft_itoa(glo.exit_status));
+			i+=2;
 		}
-		i += k;
-		if (str[i] && str[i] == '$' && str[i + 1])
+		else
 		{
-			ret = ft_strjoin(ret, ret_var(glo.env, find_name(str)));
-			i += find_name_len(str + i);
-			i++;
-			if (str[i])
-				k = pre_varlen(str + i);
-		}
-		if (str[i])
-		{
-			if (k == 0 && str[i] != '$')
-				k++;
-			ret = ft_strjoin(ret, ft_substr(str, i, k));
+			if (str[i] == '$')
+			{
+				ret = ft_strjoin(ret, ft_substr(ret_var(glo.env, find_name(str + i)),
+					0, ft_strlen(ret_var(glo.env, find_name(str)))));
+				i += find_name_len(str + i) + 1;
+			}
 			i += k;
-			k--;
+			if (str[i] && str[i] == '$' && str[i + 1])
+			{
+				ret = ft_strjoin(ret, ret_var(glo.env, find_name(str)));
+				i += find_name_len(str + i);
+				i++;
+				if (str[i])
+					k = pre_varlen(str + i);
+			}
+			if (str[i])
+			{
+				if (k == 0 && str[i] != '$')
+					k++;
+				ret = ft_strjoin(ret, ft_substr(str, i, k));
+				i += k;
+				k--;
+			}
 		}
 	}
 	free(str);
@@ -279,7 +287,7 @@ void	ft_printer(t_args *arg)
 int main(int arc, char **arv, char **enva)
 {
 	int		i;
-	t_env	*envar;
+	t_env	*envar, *tmp;
 	t_args	*args;
 	char	*line;
 	char	*currdir;
@@ -302,8 +310,15 @@ int main(int arc, char **arv, char **enva)
 		args = ret_com(line);
 		glo.args = args;
 		ret_fd();
-		execution();
-		
+		tmp = envar;
+		export(glo.args->command[1]);
+		while (tmp)
+		{
+			printf("%s\n", tmp->name);
+			printf("%s\n", tmp->value);
+			tmp = tmp->next;
+		}
+		//execution();
 		close_fd();
 		//ft_printer(args);
 		// free(currdir);

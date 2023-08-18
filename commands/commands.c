@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 22:47:39 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/18 06:42:11 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,20 @@ void ft_unset(char *str)
 	free(tmp->name);
 	free(tmp->value);
 	free(tmp);
+}
+
+int	check_for_export(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (1);
+		i++;
+	}
+	return (-1);
 }
 
 void	export(char *str)
