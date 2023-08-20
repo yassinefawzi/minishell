@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/18 00:41:29 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/19 17:39:55 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	cd(t_args *args);
 void	env(void);
 void	echo(t_args *args);
 void	export(char *str);
+void 	ft_unset(char *str);
 int		val_len(char *str);
 char	*env_val(char *str);
 char	*env_name(char *str);
@@ -78,6 +79,7 @@ int		check_if_valid(char *str);
 void    execution(void);
 void	ret_fd(void);
 void	close_fd(void);
+int		array_len(char **str);
 char	*cleaned_spaces(char *str);
 t_args	*ft_lstnew_args(char *arg);
 int		check_for_pipes(char *str);

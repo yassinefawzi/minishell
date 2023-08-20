@@ -15,7 +15,7 @@ SRCS =	commands/commands.c \
 
 RM = rm -f
 NAME = minishell
-# CFLAGS = -g3 -fsanitize=address
+CFLAGS = -g3 -fsanitize=address
 
 all: $(NAME)
 

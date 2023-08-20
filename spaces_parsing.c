@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:52:47 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 17:11:22 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 18:45:48 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int	ft_spaces_len(char	*str)
 				ret++;
 				i++;
 			}
+			ret++;
 		}
 		if (str[i] == ' ' || str[i] == '\t')
 		{
@@ -148,6 +149,7 @@ int	ft_spaces_len(char	*str)
 				ret--;
 		}
 	}
+	// printf("%d\n", ret);
 	return (ret);
 }
 
@@ -170,17 +172,19 @@ char	*cleaned_spaces(char *str)
 				break ;
 		if (str[i] == '\'' || str[i] == '"')
 		{
-			k = quote_len(str, i) + 1;
+			k = quote_len(str, i) + 2;
 			while (k--)
 				ret[j++] = str[i++];
-			i++;
 		}
 		if (str[i] == ' ' || str[i] == '\t')
 		{
-			while (str[i + 1] == ' ' || str[i + 1] == '\t')
+			while (str[i + 1] && (str[i + 1] == ' ' || str[i + 1] == '\t'))
+				i++;
+			if ((str[i] == ' ' || str[i] == '\t') && !str[i + 1])
 				i++;
 		}
-		ret[j++] = str[i++];
+		if (str[i])
+			ret[j++] = str[i++];
 	}
 	ret[j] = 0;
 	free(str);

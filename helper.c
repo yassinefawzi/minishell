@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 22:49:26 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/14 06:51:39 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 20:05:09 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,24 @@ void	hidden_symbols(char *str)
 				if (str[i] == '|')
 					str[i] = 1;
 				else if (str[i] == '>')
-					str[i] = 2;
+				{
+					if (str[i - 1] != hol && str[i + 1] != hol)
+						str[i] = 2;
+				}
 				else if (str[i] == '<')
-					str[i] = 3;
+				{
+					if (str[i - 1] != hol && str[i + 1] != hol)
+						str[i] = 3;
+				}	
 				else if (str[i] == '$')
 					str[i] = 4;
 				i++;
 			}
-			i++;
+			if (str[i])
+				i++;
 		}
-		i++;
+		if (str[i])
+			i++;
 	}
 }
 

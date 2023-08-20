@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/18 06:33:30 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 22:19:00 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ int	pre_varlen(char *str)
 	int	i;
 	int	ret;
 
+	if (str[0] == '\0')
+		return (0);
 	ret = 0;
 	i = 0;
 	i++;
@@ -295,33 +297,19 @@ int main(int arc, char **arv, char **enva)
 	i = 0;
 	int j = 0;
 	envar = ret_env(enva);
+	glo.env = envar;
 	while (1)
 	{
-		// currdir = getcwd(0, 0);
-		// currdir = ft_strjoin(currdir, " ");
 		line = readline("> ");
 		if (!line)
-		{
-			printf("thla\n");
-			exit(1);
-		}
+			exit(-1);
 		add_history(line);  
-		glo.env = envar;
 		args = ret_com(line);
 		glo.args = args;
 		ret_fd();
-		tmp = envar;
-		export(glo.args->command[1]);
-		while (tmp)
-		{
-			printf("%s\n", tmp->name);
-			printf("%s\n", tmp->value);
-			tmp = tmp->next;
-		}
 		//execution();
+		ft_printer(args);
 		close_fd();
-		//ft_printer(args);
-		// free(currdir);
 		ft_free(args);
 	}
 	free_list(envar);

@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/18 06:42:11 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 22:56:22 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,30 +144,65 @@ void	env(void)
 	}
 }
 
-void ft_unset(char *str)
+char	*add_eq(char *str)
+{
+	char	*ret;
+	int		i;
+
+	i = 0;
+	ret = malloc(ft_strlen(str) + 2);
+	while (str[i])
+	{
+		ret[i] = str[i];
+		i++;
+	}
+	ret[i] = '=';
+	ret[i + 1] = 0;
+	return (ret);
+}
+
+void ft_unset(char	**str)
 {
 	t_env	*tmp;
 	t_env	*tmp1;
+	int		i;
+	int		j;
 
-	tmp = glo.env;
-	str = ft_strjoin(str, "=");
-	while (tmp)
+	i = 0;
+	j = 0;
+	while (str[i])
 	{
-		if (ft_strlen(tmp->name) == ft_strlen(str))
-		{
-			if (ft_strncmp(tmp->name, str, ft_strlen(str)) == 0)
-				break ;
-		}
-		tmp1 = tmp;
-		tmp = tmp->next;
+		str[i] = add_eq(str[i]);
+		i++;
 	}
-	if (tmp->next)
-		tmp1 = tmp->next;
-	else
-		tmp1 = 0;
-	free(tmp->name);
-	free(tmp->value);
-	free(tmp);
+	i = 0;
+	while (str[i])
+	{
+		tmp = glo.env;
+		tmp1 = glo.env;
+		while (tmp1)
+		{
+			if (ft_strlen(str[i]) == ft_strlen(tmp1->name))
+			{
+				if (ft_strcmp(str[i], tmp1->name) == 1)
+				{
+					tmp->next = tmp1->next;
+					break ;
+				}
+			}
+			if (j > 0)
+				tmp = tmp->next;
+			tmp1 = tmp1->next;
+			j++;
+		}
+		if (tmp1)
+		{
+			free(tmp1->name);
+			free(tmp1->value);
+			free(tmp1);
+		}
+		i++;
+	}
 }
 
 int	check_for_export(char *str)
@@ -184,6 +219,27 @@ int	check_for_export(char *str)
 	return (-1);
 }
 
+void	add_new_var(char *str0, char *str1)
+{
+	t_env	*last;
+	t_env	*new_elem;
+	t_env	*tmp = glo.env;
+
+	new_elem = malloc(sizeof(t_env));
+	last = glo.env;
+	while (last->next)
+	{
+		last = last->next;
+	}
+	new_elem->name = ft_strdup(str0);
+	if (!str1)
+		new_elem->value = ft_strdup("\n");
+	else
+		new_elem->value = ft_strdup(str1);
+	new_elem->next = NULL;
+	last->next = new_elem;
+}
+
 void	export(char *str)
 {
 	t_env	*tmp;
@@ -192,8 +248,6 @@ void	export(char *str)
 	char	**hol;
 	int		i;
 
-	i = 2;
-	tmp = glo.env;
 	if (!str)
 	{
 		while (tmp)
@@ -205,32 +259,32 @@ void	export(char *str)
 		}
 		return ;
 	}
-	hol = ft_split(str, '=');
-	while(hol[i])
-		hol[1] = ft_strjoin(hol[1], hol[i++]);
-	hol[0] = ft_strjoin(hol[0], "=");
+	if (check_for_export(str) < 0)
+		return ;
 	i = 0;
-	while (tmp->next)
+	tmp = glo.env;
+	hol = ft_split(str, '=');
+	hol[0] = ft_strjoin(hol[0], "=");
+	while (tmp)
 	{
 		if (ft_strlen(tmp->name) == ft_strlen(hol[0]))
 		{
-			if (ft_strncmp(tmp->name, hol[0], ft_strlen(hol[0])) == 0)
-			{
-				i = 1;
+			if (ft_strcmp(hol[0], tmp->name) == 1)
 				break ;
-			}
 		}
 		tmp = tmp->next;
 	}
-	if (i == 1)
+	if (tmp)
 	{
 		free(tmp->value);
-		tmp->value = ft_substr(hol[1], 0, ft_strlen(hol[1]));
+		tmp->value = ft_strdup(hol[1])	;
+		while (hol[i])
+			free(hol[i++]);
+		free(hol);
 		return ;
 	}
-	ret = malloc(sizeof(t_env));
-	ret->name = hol[0];
-	ret->value = hol[1];
-	ret->next = 0;
-	tmp->next = ret;
+	add_new_var(hol[0], hol[1]);
+	while (hol[i])
+		free(hol[i++]);
+	free(hol);
 }

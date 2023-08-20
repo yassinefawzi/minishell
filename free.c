@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 02:42:17 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/13 12:42:13 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/19 18:45:51 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ void	ft_free(t_args *args)
 	{
 		i = 0;
 		while (tmp->command[i])
+		{
 			free(tmp->command[i++]);
+		}
 		free(tmp->command);
 		i = 0;
 		while (i < 3)

@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:48:06 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/17 16:50:11 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/19 19:28:54 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	check_for_space_error(char *str)
 	int		j;
 	char	hol;
 
+	i = 0;
 	if (str[i])
 	{
 		if (str[ft_strlen(str) - 1] == '>' || str[ft_strlen(str) - 1] == '<')

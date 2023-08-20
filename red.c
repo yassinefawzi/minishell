@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 11:31:48 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/14 07:11:12 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 20:18:10 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ret_red(t_args *args)
 	t_args	*tmp;
 
 	tmp = args;
+	
 	while (tmp)
 	{
 		tmp->red[0] = malloc(sizeof(int));
@@ -107,7 +108,12 @@ char	*added_space(char *str)
 		{
 			if ((str[i] != ' ' && str[i] != '\t' && str[i] != str[i + 1]))
 			{
-				if (str[i] != '<' && str[i + 1] != '>')
+				if (str[i] == '\'' || str[i] == '"')
+				{
+					ret[j++] = ' ';
+					ret[j++] = str[i++];
+				}
+				else
 				{
 					ret[j++] = str[i++];
 					ret[j++] = ' ';
@@ -116,12 +122,29 @@ char	*added_space(char *str)
 		}
 		if (str[i] == '>' || str[i] == '<')
 		{
-			if ((str[i + 1] != str[i]) && (str[i] != '<' && str[i + 1] != '>'))
+			if ((str[i + 1] != str[i]))
 			{
 				if (str[i + 1] != ' ' && str[i + 1] != '\t')
 				{
-					ret[j++] = str[i++];
-					ret[j++] = ' ';
+					if (str[i] != '<' && str[i + 1] != '>')
+					{
+						if (str[i - 1] == '\'' || str[i - 1] == '"')
+						{
+							ret[j++] = str[i++];
+							ret[j++] = str[i++];
+							ret[j++] = ' ';
+						}
+						else
+						{
+							ret[j++] = str[i++];
+							ret[j++] = ' ';
+						}
+					}
+					if (str[i] == '<' && str[i + 1] != '<' && str[i + 1] != '>')
+					{
+						ret[j++] = str[i++];
+						ret[j++] = ' ';
+					}
 				}
 			}
 		}
@@ -192,7 +215,8 @@ int	*check_for_redirections(char **str)
 		{
 			if (str[i][1] == '>')
 				ret[j++] = 3;
-			ret[j++] = 1;
+			else
+				ret[j++] = 1;
 		}
 		 if (str[i][0] == '<')
 		{
@@ -200,7 +224,8 @@ int	*check_for_redirections(char **str)
 				ret[j++] = 4;
 			else if (str[i][1] == '>')
 				ret[j++] = -1;
-			ret[j++] = 2;
+			else
+				ret[j++] = 2;
 		}
 		i++;
 	}

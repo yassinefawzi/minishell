@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 17:37:23 by yfawzi            #+#    #+#             */
-/*   Updated: 2022/10/23 23:01:08 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/19 17:25:57 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s1)
 	char	*str;
 	int		i;
 
+	if (!s1)
+		return (0);
 	i = ft_strlen(s1);
 	str = (char *)malloc(i + 1);
 	if (!s1)
