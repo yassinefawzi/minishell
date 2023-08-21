@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:52:47 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 18:45:48 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 23:17:32 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,11 @@ char	*ft_clean(char *str)
 {
 	int		i;
 	int		j;
-	int		check;
 	char	*ret;
 	int		hol;
 
 	i = 0;
 	j = 0;
-	check = 0;
 	ret = malloc(cleaned_len(str) + 1);
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;

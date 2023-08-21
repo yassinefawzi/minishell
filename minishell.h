@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/19 17:39:55 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/21 03:03:11 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include <fcntl.h>
+# include <signal.h>
 #include <sys/wait.h>
 
 typedef struct t_env
@@ -45,11 +46,25 @@ typedef struct t_glo
 {
 	t_env	*env;
 	t_args	*args;
-	// int		**expnd;
-	// int		exp_build;
 	int exit_status;
 }	t_glo;
 extern t_glo	glo;
+
+int		array_len(char **str);
+int		is_builtin(char *cmd);
+void	exec_builtin(t_args *args);
+void	builtin_proc(t_args *args);
+void	free_arr(char **str);
+char	*look_for_path(void);
+void	cmd_proc(char **hol, t_args *tmp, int i);
+void	exec_child_utils(t_args *tmp);
+void	exec_child(t_args *tmp, int *fd, int flag, int tmp_fd);
+void	exe_utils(t_args *tmp, int *fd, int *pids);
+int		ft_size_env(void);
+int		ft_size_args(void);
+char	**lst_to_env(void);
+void	free_and_close(int	*pids, int *save_fds);
+void	hadnle_signle(int n);
 
 void	pwd(void);
 void	ft_exit(void);
@@ -57,7 +72,7 @@ void	cd(t_args *args);
 void	env(void);
 void	echo(t_args *args);
 void	export(char *str);
-void 	ft_unset(char *str);
+void 	ft_unset(char **str);
 int		val_len(char *str);
 char	*env_val(char *str);
 char	*env_name(char *str);
@@ -76,7 +91,7 @@ void	error_message(char *str);
 void	hidden_symbols(char *str);
 int		ft_spaces_len(char	*str);
 int		check_if_valid(char *str);
-void    execution(void);
+void    execution(t_args *tmp);
 void	ret_fd(void);
 void	close_fd(void);
 int		array_len(char **str);
@@ -98,4 +113,6 @@ int		*check_for_redirections(char **str);
 int		bracket_counter(char *str, char sym);
 int		sym_check(char *str, char sym, char sym2);
 void	ft_lstadd_back(t_args **list, t_args *new);
+void	look_for_new(void);
+void	look_for_old(void);
 #endif

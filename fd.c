@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 00:23:34 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/18 05:19:14 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 23:27:42 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	ret_fd(void)
 {
 	int		i;
 	t_args	*tmp;
-	int failure = 0;
 	int		hol;
 
 	i = 0;
@@ -92,7 +91,6 @@ void	close_fd(void)
 {
 	int		i;
 	int		hol;
-	int j = 1;
 	t_args	*tmp;
 
 	i = 0;
@@ -104,8 +102,7 @@ void	close_fd(void)
 		{
 			while (hol > 0)
 			{
-				j = close(tmp->fd[i]);
-
+				close(tmp->fd[i]);
 				i++;
 				hol--;
 			}

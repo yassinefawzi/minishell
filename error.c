@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:48:06 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/19 19:28:54 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 23:16:48 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	error_message(char *str)
 int	check_for_space_error(char *str)
 {
 	int		i;
-	int		j;
 	char	hol;
 
 	i = 0;

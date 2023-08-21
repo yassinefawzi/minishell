@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 02:42:17 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/19 18:45:51 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 23:15:42 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	free_list(t_env *env)
 void	ft_free(t_args *args)
 {
 	int		i;
-	int		hol;
 	t_args	*tmp;
 	t_args	*tmp1;
 

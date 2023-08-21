@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 23:40:50 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/19 19:36:41 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 23:17:16 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,10 @@ int	check_if_completed(char *str, char cmp)
 int	check_single_quote(char *str)
 {
 	int		i;
-	char	hol;
-	int		counts;
-	int		countd;
 	int		j;
 
 	j = 0;
 	i = 0;
-	countd = 0;
-	counts = 0;
 	while (str[i])
 	{
 		if (str[i] == '"' || str[i] == '\'')

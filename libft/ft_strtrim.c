@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 02:14:56 by yfawzi            #+#    #+#             */
-/*   Updated: 2022/11/09 17:40:13 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 23:44:31 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,12 @@ char	*ft_strtrim(char const *s1, char const *set)
 {
 	int	i;
 	int	len;
-	int	j;
 
 	i = 0;
 	if (s1 == NULL)
 		return (NULL);
 	if (set == NULL)
 		return (ft_strdup(s1));
-	j = 0;
 	i = start(s1, set);
 	len = ft_strlen(s1) - 1;
 	if (len < 0)

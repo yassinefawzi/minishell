@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 11:31:48 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 20:18:10 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/20 23:24:48 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ char	*added_space(char *str)
 	int		i;
 	int		j;
 	char	*ret;
-	char	hol;
 
 	if (!str)
 		return (0);

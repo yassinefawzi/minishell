@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 22:19:00 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/21 02:56:29 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	*find_name(char *str)
 int	num_of_vars(char *str)
 {
 	int	i;
-	int	j;
 	int	ret;
 
 	i = 0;
@@ -130,10 +129,8 @@ int	pre_varlen(char *str)
 
 char	*ret_var(t_env *env, char *name)
 {
-	int		i;
 	t_env	*tmp;
 
-	i = 0;
 	tmp = env;
 	name = ft_strjoin(name, "=");
 	while (tmp)
@@ -151,15 +148,13 @@ char	*ret_var(t_env *env, char *name)
 char	*check_var(char *str)
 {
 	int		i;
-	int		j;
 	int		k;
 	char	*ret;
 
 	i = 0;
-	j = 0;
 	k = 0;
 	k = pre_varlen(str);
-	if (k == ft_strlen(str) || k == -1)
+	if ((size_t)k == ft_strlen(str) || k == -1)
 		return (str);
 	ret = malloc(k + 1);
 	ret = 0;
@@ -206,7 +201,6 @@ t_args	*ret_com(char *str)
 {
 	t_args	*ret_args;
 	t_args	*tmp;
-	char	*tmp_line;
 	char	**args;
 	int		i;
 	int		check_for_double;
@@ -272,7 +266,9 @@ void	ft_printer(t_args *arg)
 	while (args)
 	{
 		while (args->command[i])
+		{
 			printf("%s\n", args->command[i++]);
+		}
 		i = 0;
 		printf("num of red == %d\n", args->red[0][0]);
 		hol = args->red[0][0];
@@ -286,29 +282,40 @@ void	ft_printer(t_args *arg)
 	}
 }
 
+void	hadnle_signle(int n)
+{
+	(void) n;
+	write(1, "\n", 1);
+	rl_replace_line ("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	glo.exit_status = 1;
+}
+
 int main(int arc, char **arv, char **enva)
 {
-	int		i;
-	t_env	*envar, *tmp;
+	t_env	*envar;
 	t_args	*args;
 	char	*line;
-	char	*currdir;
-
-	i = 0;
-	int j = 0;
+	(void)arc;
+	(void)arv;
 	envar = ret_env(enva);
 	glo.env = envar;
 	while (1)
 	{
-		line = readline("> ");
+		signal (SIGINT, hadnle_signle);
+		signal(SIGQUIT, SIG_IGN);
+		line = readline("minishell> ");
 		if (!line)
-			exit(-1);
+		{
+			printf("exit\n");
+			exit(1);
+		}
 		add_history(line);  
 		args = ret_com(line);
 		glo.args = args;
 		ret_fd();
-		//execution();
-		ft_printer(args);
+		execution(glo.args);
 		close_fd();
 		ft_free(args);
 	}

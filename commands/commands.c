@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 22:56:22 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/21 03:51:17 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,57 @@ void	echo(t_args *args)
 			printf("\n");
 		}
 	}
-	// else
-	// 	redirect();
 }
 
+t_env	*look_for_pwd(void)
+{
+	t_env	*tmp;
+
+	tmp = glo.env;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->name, "PWD=") > 0)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	look_for_old(void)
+{
+	t_env	*tmp;
+	t_env	*tmp1;
+
+	tmp = glo.env;
+	tmp1 = glo.env;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->name, "OLDPWD=") > 0)
+		{
+			free(tmp->value);
+			tmp1 = look_for_pwd();
+			tmp->value = ft_strdup(tmp1->value);
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	look_for_new(void)
+{
+	t_env	*tmp;
+
+	tmp = glo.env;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->name, "PWD=") > 0)
+		{
+			free(tmp->value);
+			tmp->value = 0;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
 void	cd(t_args *args)
 {
 	int		val;
@@ -81,9 +128,9 @@ void	cd(t_args *args)
 	if (args->command[1] == NULL)
 	{
 		str = getcwd(0, 0);
-		while (j != 3)
+		while (j != 4)
 		{
-			if (str[i] == '/')
+			if (str[i] && str[i] == '/')
 				j++;
 			i++;
 		}
@@ -91,6 +138,7 @@ void	cd(t_args *args)
 		ft_strlcpy(str1, str, i);
 		free(str);
 		val = chdir(str1);
+		free(str1);
 		if (val < 0)
 		{
 			perror("cd");
@@ -138,7 +186,7 @@ void	env(void)
 	tmp = glo.env;
 	while (tmp)
 	{
-		printf("%s  ", tmp->name);
+		printf("%s", tmp->name);
 		printf("%s\n", tmp->value);
 		tmp = tmp->next;
 	}
@@ -223,7 +271,6 @@ void	add_new_var(char *str0, char *str1)
 {
 	t_env	*last;
 	t_env	*new_elem;
-	t_env	*tmp = glo.env;
 
 	new_elem = malloc(sizeof(t_env));
 	last = glo.env;
@@ -243,8 +290,6 @@ void	add_new_var(char *str0, char *str1)
 void	export(char *str)
 {
 	t_env	*tmp;
-	t_args	*tmp1;
-	t_env	*ret;
 	char	**hol;
 	int		i;
 

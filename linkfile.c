@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 22:16:57 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/21 02:16:55 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,8 @@ int	len_of_split(char *str)
 		}
 		else if (str[i] == ' ' || str[i] == '\t')
 		{
-			ret++;
+			if (str[i + 1])
+				ret++;
 		}
 		if (str[i])
 			i++;
@@ -187,6 +188,7 @@ int	single_splited_len(char *str, char hol)
 	}
 	return (i);
 }
+
 char	**ret_splited_args(char *str)
 {
 	int		i;
@@ -213,18 +215,29 @@ char	**ret_splited_args(char *str)
 			ret[j][k] = 0;
 			if (str[i])
 				i++;
-			j++;
 		}
 		else if (str[i] == ' ' || str[i] == '\t')
 		{
-			i++;
-			ret[j] = malloc(single_splited_len(str + i, str[i - 1]) + 1);
-			while (str[i] && (str[i] != ' ' && str[i] != '\t'))
-				ret[j][k++] = str[i++];
-			if (str[i])
+			if (str[i + 1] == '\'' || str[i + 1] == '"')
+			{
+				k = -1;
 				i++;
-			ret[j][k] = 0;
-			j++;
+			}
+			else if (str[i] == ' ' && str[i + 1] == '\0')
+			{
+				k = -1;
+				i++;
+			}
+			else
+			{
+				i++;
+				ret[j] = malloc(single_splited_len(str + i, str[i - 1]) + 1);
+				while (str[i] && (str[i] != ' ' && str[i] != '\t'))
+					ret[j][k++] = str[i++];
+				if (str[i])
+					i++;
+				ret[j][k] = 0;
+			}
 		}
 		else
 		{
@@ -232,39 +245,26 @@ char	**ret_splited_args(char *str)
 			while (str [i] && (str[i] != ' ' && str[i] != '\t') && (str[i] != '\'' || str[i] != '"'))
 				ret[j][k++] = str[i++];
 			ret[j][k] = 0;
-			j++;
 		}
+		if (k != -1)
+			j++;
 	}
+	ret[j] = 0;
+	j = 0;
 	return (ret);
 }
+
 t_args	*ft_lstnew_args(char *arg)
 {
 	t_args	*args;
-	int		i;
-	int		k;
-	int		hol;
 
-	k = 0;
-	i = 0;
 	arg = added_space(arg);
-	i = 0;
 	if (!arg)
 		return (0);
 	args = malloc(sizeof(t_args));
 	if (!args)
 		return (0);
-	// arg = remove_quote(arg);
-	// k = quote_looper(arg);
-	// if (k < 0)
-	// {
-	// 	if (k == -1)
-	// 	args->command = ft_split(arg, '"');
-	// 	else
-	// 		args->command = ft_split(arg, '\'');
-	// }
-	// else
 	args->command = ret_splited_args(arg);
-	i = 0;
 	args->red = malloc(3 * sizeof(int *));
 	args->next = 0;
 	free(arg);
