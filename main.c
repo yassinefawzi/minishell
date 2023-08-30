@@ -6,196 +6,13 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 15:50:30 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/21 02:56:29 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 09:29:28 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_glo	glo;
-
-int	check_for_var(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$' && str[i + 1])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	find_name_len(char *str)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		while (ft_isalnum(str[i]) > 0)
-		{
-			j++;
-			i++;
-		}
-		if (j > 0)
-			return (j);
-		i++;
-	}
-	return (0);
-}
-
-char	*find_name(char *str)
-{
-	int		i;
-	int		j;
-	char	*ret;
-
-	i = 0;
-	j = 0;
-	ret = malloc(find_name_len(str) + 1);
-	while (str[i])
-	{
-		if (str[i] == '$' && str[i + 1])
-		{
-			i++;
-			while (ft_isalnum(str[i]) > 0)
-			{
-				ret[j++] = str[i++];
-			}
-			ret[j] = 0;
-			return (ret);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	num_of_vars(char *str)
-{
-	int	i;
-	int	ret;
-
-	i = 0;
-	ret = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			if (str[i + 1] == '$')
-			{
-				while (str[i] == '$')
-					i++;
-				while (str[i] && str[i] != '$')
-					i++;
-			}
-			if (str[i] == '$' && str[i + 1])
-				ret++;
-		}
-		i++;
-	}
-	return (ret);
-}
-
-int	pre_varlen(char *str)
-{
-	int	i;
-	int	ret;
-
-	if (str[0] == '\0')
-		return (0);
-	ret = 0;
-	i = 0;
-	i++;
-	if (str[i] == ' ' || str[i] == '$')
-	{
-		while (str[i] == ' ')
-			i++;
-		if (str[i] == '$')
-			return (-1);
-	}
-	i = 0;
-	while (str[i] && str[i] != '$')
-	{
-		ret++;
-		i++;
-	}
-	return (ret);
-}
-
-char	*ret_var(t_env *env, char *name)
-{
-	t_env	*tmp;
-
-	tmp = env;
-	name = ft_strjoin(name, "=");
-	while (tmp)
-	{
-		if (ft_strlen(tmp->name) == ft_strlen(name))
-		{
-			if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
-				return (tmp->value);
-		}
-		tmp = tmp->next;
-	}
-	return ("\n");
-}
-
-char	*check_var(char *str)
-{
-	int		i;
-	int		k;
-	char	*ret;
-
-	i = 0;
-	k = 0;
-	k = pre_varlen(str);
-	if ((size_t)k == ft_strlen(str) || k == -1)
-		return (str);
-	ret = malloc(k + 1);
-	ret = 0;
-	while (str[i])
-	{
-		ret = ft_strjoin(ret, ft_substr(str, i, k));
-		if (str[i] == '$' && str[i + 1] == '?')
-		{
-			ret = ft_strjoin(ret, ft_itoa(glo.exit_status));
-			i+=2;
-		}
-		else
-		{
-			if (str[i] == '$')
-			{
-				ret = ft_strjoin(ret, ft_substr(ret_var(glo.env, find_name(str + i)),
-					0, ft_strlen(ret_var(glo.env, find_name(str)))));
-				i += find_name_len(str + i) + 1;
-			}
-			i += k;
-			if (str[i] && str[i] == '$' && str[i + 1])
-			{
-				ret = ft_strjoin(ret, ret_var(glo.env, find_name(str)));
-				i += find_name_len(str + i);
-				i++;
-				if (str[i])
-					k = pre_varlen(str + i);
-			}
-			if (str[i])
-			{
-				if (k == 0 && str[i] != '$')
-					k++;
-				ret = ft_strjoin(ret, ft_substr(str, i, k));
-				i += k;
-				k--;
-			}
-		}
-	}
-	free(str);
-	return (ret);
-}
 
 t_args	*ret_com(char *str)
 {
@@ -207,25 +24,37 @@ t_args	*ret_com(char *str)
 
 	ret_args = 0;
 	if (check_quotes(str) < 0 || check_for_brackets(str) < 0)
+	{
+		free(str);
 		return (0);
+	}
 	hidden_symbols(str);
-	str = cleaned_spaces(str);
+	str = cleaned_spaces(str, 0, 0, 0);
 	if (check_for_space_error(str) < 0)
+	{
+		free(str);
 		return (0);
+	}
 	if (check_for_pipes(str) < 0 || check_for_empty_pipe(str) < 0)
+	{
+		free(str);
 		return (0);
+	}
 	check_for_double = check_if_valid(str);
 	if (check_for_double >=  0)
 	{
 		if (check_for_double == 0)
+		{
+			free(str);
 			return (NULL); 
+		}
 		str = fixed_pipes(str, check_for_double);
 	}
 	args = ft_split(str, '|');
 	i = 0;
 	while (args[i])
 	{
-		args[i] = ft_clean(args[i]);
+		args[i] = ft_clean(args[i], 0, 0);
 		i++;
 	}
 	i = 0;
@@ -242,7 +71,7 @@ t_args	*ret_com(char *str)
 		while (tmp->command[i])
 		{
 			return_symbol(tmp->command[i]);
-			tmp->command[i] = check_var(tmp->command[i]);
+			tmp->command[i] = check_var(tmp->command[i], 0, 0, 0);
 			i++;
 		}
 		tmp = tmp->next;
@@ -265,10 +94,9 @@ void	ft_printer(t_args *arg)
 	args = arg;
 	while (args)
 	{
+		i = 0;
 		while (args->command[i])
-		{
 			printf("%s\n", args->command[i++]);
-		}
 		i = 0;
 		printf("num of red == %d\n", args->red[0][0]);
 		hol = args->red[0][0];
@@ -315,7 +143,9 @@ int main(int arc, char **arv, char **enva)
 		args = ret_com(line);
 		glo.args = args;
 		ret_fd();
-		execution(glo.args);
+		final_cmd();
+		execution();
+		// ft_printer(glo.args);
 		close_fd();
 		ft_free(args);
 	}

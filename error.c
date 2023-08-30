@@ -6,15 +6,16 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 02:48:06 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 23:16:48 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 08:57:24 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error_message(char *str)
+int	error_message(char *str)
 {
 	ft_putstr_fd(str, 2);
+	return (-1);
 }
 
 int	check_for_space_error(char *str)

@@ -10,10 +10,12 @@ SRCS =	commands/commands.c \
 		pipes.c \
 		brackets.c \
 		red.c \
-		execution/here_doc.c execution/cmd_process.c execution/exe_utils.c\
-		execution/execution.c execution/builtin_utils.c\
-		fd.c
-
+		fd.c \
+		execution.c \
+		commands/unset.c \
+		commands/exit.c \
+		here_doc.c \
+		var.c
 RM = rm -f
 NAME = minishell
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address

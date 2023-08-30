@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoelansa <yoelansa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 00:23:34 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 23:27:42 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 03:52:56 by yoelansa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	fd_error(char *str)
 {
 	ft_putstr_fd("bash: ", 2);
 	ft_putstr_fd(str, 2);
-	perror(":\n");
+	perror(" ");
 }
 
 void	ret_fd(void)
@@ -33,6 +33,7 @@ void	ret_fd(void)
 		if (hol > 0)
 		{
 			tmp->fd = malloc(hol * 4);
+			i = 0;
 			while (hol > 0)
 			{
 				if (tmp->red[1][i] == 1)
@@ -44,7 +45,7 @@ void	ret_fd(void)
 						tmp->flag_file = -1;
 						break;
 					}
-					tmp->file = tmp->fd[i];
+					tmp->fileout = tmp->fd[i];
 				}
 				else if (tmp->red[1][i] == 2)
 				{
@@ -66,22 +67,27 @@ void	ret_fd(void)
 						tmp->flag_file = -1;
 						break;
 					}
-					tmp->file = tmp->fd[i];
+					tmp->fileout = tmp->fd[i];
 				}
 				else if (tmp->red[1][i] == 4)
 				{
 					tmp->eof = tmp->command[tmp->red[2][i]];
+					here_doc(tmp->eof);
 					if (tmp->fd[i] == -1)
 						fd_error("heredoc");
 				}
 				i++;
 				hol--;
 			}
+			if (tmp->filein < -1)
+				tmp->filein = 0;
+			if (tmp->fileout < -1)
+				tmp->fileout = 1;
 		}
 		else
 		{
-			tmp->filein = -1;
-			tmp->file = -1;
+			tmp->filein = 0;
+			tmp->fileout = 1;
 		}
 		tmp = tmp->next;
 	}

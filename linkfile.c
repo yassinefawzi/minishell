@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:52:18 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/21 02:16:55 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 09:01:23 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	quote_looper(char *str)
 	}
 	return (1);
 }
+
 int	len_of_quotes(char *str)
 {
 	int	i;
@@ -77,59 +78,46 @@ int	len_of_quotes(char *str)
 			i++;
 			ret++;
 		}
-		else if (str[i])
-		{
-			i++;
+		else if (str[i++])
 			ret++;
-		}
 	}
 	return (ret);
 }
 
-char	*remove_quote(char *str)
-{
-	int		i;
-	int		j;
-	char	hol;
-	char	hol1;
-	char	*ret;
+// char	*remove_quote(char *str, int i, int j, char *hol)
+// {
+// 	char	hol1;
+// 	char	*ret;
 
-	j = 0;
-	i = 0;
-	hol = 0;
-	ret = malloc(len_of_quotes(str) + 1);
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			if (!hol)
-				hol1 = str[i];
-			hol = str[i];
-			if (hol == hol1)
-				ret[j++] = str[i++];
-			else
-				ret[j++] = hol1;
-			while (str[i] != hol)
-				ret[j++] = str[i++];
-			i++;
-		}
-		if (str[i])
-		{
-			ret[j++] = str[i++];
-		}
-	}
-	ret[j] = 0;
-	free(str);
-	return (ret);
-}
+// 	ret = malloc(len_of_quotes(str) + 1);
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '\'' || str[i] == '"')
+// 		{
+// 			if (!hol)
+// 				hol1 = str[i];
+// 			hol = str[i];
+// 			if (hol == hol1)
+// 				ret[j++] = str[i++];
+// 			else
+// 				ret[j++] = hol1;
+// 			while (str[i] != hol)
+// 				ret[j++] = str[i++];
+// 			i++;
+// 		}
+// 		if (str[i])
+// 			ret[j++] = str[i++];
+// 	}
+// 	ret[j] = 0;
+// 	free(str);
+// 	return (ret);
+// }
 
-int	len_of_split(char *str)
+int	len_of_split(char *str, int i)
 {
-	int		i;
 	int		ret;
 	char	hol;
 
-	i = 0;
 	ret = 0;
 	while (str[i])
 	{
@@ -199,7 +187,7 @@ char	**ret_splited_args(char *str)
 
 	if (!str)
 		return (0);
-	ret = ft_calloc((len_of_split(str) + 2), sizeof(char *));
+	ret = ft_calloc((len_of_split(str, 0) + 2), sizeof(char *));
 	i = 0;
 	j = 0;
 	k = 0;
@@ -209,10 +197,15 @@ char	**ret_splited_args(char *str)
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			hol = str[i++];
-			ret[j] = malloc(single_splited_len(str + i, hol) + 1);
-			while (str[i] != hol)
-				ret[j][k++] = str[i++];
-			ret[j][k] = 0;
+			if (single_splited_len(str + i, hol) <= 0)
+				k = -1;
+			else
+			{
+				ret[j] = malloc(single_splited_len(str + i, hol) + 1);
+				while (str[i] != hol)
+					ret[j][k++] = str[i++];
+				ret[j][k] = 0;
+			}
 			if (str[i])
 				i++;
 		}
@@ -233,7 +226,14 @@ char	**ret_splited_args(char *str)
 				i++;
 				ret[j] = malloc(single_splited_len(str + i, str[i - 1]) + 1);
 				while (str[i] && (str[i] != ' ' && str[i] != '\t'))
-					ret[j][k++] = str[i++];
+				{
+					if (str[i] == '\'' && str[i + 1] == '\'')
+						i += 2;
+					else if (str[i] == '"' && str[i + 1] == '"')
+						i += 2;
+					if (str[i])
+						ret[j][k++] = str[i++];
+				}
 				if (str[i])
 					i++;
 				ret[j][k] = 0;
@@ -242,15 +242,18 @@ char	**ret_splited_args(char *str)
 		else
 		{
 			ret[j] = malloc(single_splited_len(str + i, check_first(str + i)) + 1);
-			while (str [i] && (str[i] != ' ' && str[i] != '\t') && (str[i] != '\'' || str[i] != '"'))
+			while (str [i] && (str[i] != ' ' && str[i] != '\t'))
+			{
+				if (str[i] == '\'' || str[i] == '"')
+					break ;
 				ret[j][k++] = str[i++];
+			}
 			ret[j][k] = 0;
 		}
 		if (k != -1)
 			j++;
 	}
 	ret[j] = 0;
-	j = 0;
 	return (ret);
 }
 

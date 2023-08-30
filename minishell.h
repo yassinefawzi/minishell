@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 01:03:00 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/21 03:03:11 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 08:58:02 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct t_args
 	char	**command;
 	int		**red;
 	int		*fd;
-	int		file;
+	int		fileout;
 	int		filein;
 	int		flag_file;
 	char	*eof;
@@ -55,7 +55,7 @@ int		is_builtin(char *cmd);
 void	exec_builtin(t_args *args);
 void	builtin_proc(t_args *args);
 void	free_arr(char **str);
-char	*look_for_path(void);
+char	*_path(void);
 void	cmd_proc(char **hol, t_args *tmp, int i);
 void	exec_child_utils(t_args *tmp);
 void	exec_child(t_args *tmp, int *fd, int flag, int tmp_fd);
@@ -65,37 +65,50 @@ int		ft_size_args(void);
 char	**lst_to_env(void);
 void	free_and_close(int	*pids, int *save_fds);
 void	hadnle_signle(int n);
+void	here_doc(char *eof);
+
+
+char	*check_var(char *str, int i, int j, char *hol);
+char	*ret_var(t_env *env, char *name);
+int		pre_varlen(char *str);
+int		num_of_vars(char *str);
+char	*find_name(char *str);
+int		find_name_len(char *str);
+int		check_for_var(char *str);
+
+
+
 
 void	pwd(void);
-void	ft_exit(void);
-void	cd(t_args *args);
+void	re_exit(char **cmd);
+void	cd(char **command);
 void	env(void);
-void	echo(t_args *args);
+void	echo(char **command);
 void	export(char *str);
 void 	ft_unset(char **str);
 int		val_len(char *str);
 char	*env_val(char *str);
 char	*env_name(char *str);
-char	*ft_clean(char *str);
+char	*ft_clean(char *str, int i, int j);
 void	ret_red(t_args *args);
 t_env	*ret_env(char **enva);
 void	ft_free(t_args *args);
 void	free_list(t_env *glo);
 int		*ret_index(char **str);
-int		cleaned_len(char *str);
+int		cleaned_len(char *str, int i, int ret, int hol);
 t_env	*ft_lstnew(char *enva);
 char	*added_space(char *str);
 int		check_quotes(char *str);
 void	return_symbol(char *str);
-void	error_message(char *str);
+int		error_message(char *str);
 void	hidden_symbols(char *str);
-int		ft_spaces_len(char	*str);
+int		ft_spaces_len(char	*str, int i, int ret, char hol);
 int		check_if_valid(char *str);
-void    execution(t_args *tmp);
+void    execution();
 void	ret_fd(void);
 void	close_fd(void);
 int		array_len(char **str);
-char	*cleaned_spaces(char *str);
+char	*cleaned_spaces(char *str, int i, int j, int k);
 t_args	*ft_lstnew_args(char *arg);
 int		check_for_pipes(char *str);
 int		num_of_diction(char **str);
@@ -115,4 +128,6 @@ int		sym_check(char *str, char sym, char sym2);
 void	ft_lstadd_back(t_args **list, t_args *new);
 void	look_for_new(void);
 void	look_for_old(void);
+
+void    final_cmd();
 #endif

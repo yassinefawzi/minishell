@@ -6,60 +6,63 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 18:15:05 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/21 03:51:17 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 05:18:29 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	echo(t_args *args)
+void	echo(char **command)
 {
 	int		i;
 	int		j;
 	int		k;
-	t_args	*tmp;
 
-	tmp = args;
 	i = 1;
 	j = 1;
 	k = 0;
-	while (tmp->command[i])
+	if (!command[1])
 	{
-		if (tmp->command[i][0] == '-')
+		printf("\n");
+		return	;
+	}
+	while (command[i])
+	{
+		if (command[i][0] == '-')
 		{
-			while (tmp->command[i][j] == 'n')
+			while (command[i][j] == 'n')
 				j++;
-			if (tmp->command[i][j] != 'n' && tmp->command[i][j] != '\0')
+			if (command[i][j] != 'n' && command[i][j] != '\0')
 				break ;
 			k = 1;
 		}
-		if (tmp->command[i][0] != '-')
+		if (command[i][0] != '-')
 			break ;
 		j = 0;
 		i++;
 	}
 	if (k == 0)
 		i = 1;
-	if (tmp->command[i] && tmp->red[0][0] == 0)
+	if (command[i])
 	{
 		if (k > 0)
 		{
-			while (tmp->command[i])
+			while (command[i])
 			{
-				if (tmp->command[i + 1])
-					printf("%s ", tmp->command[i++]);
+				if (command[i + 1])
+					printf("%s ", command[i++]);
 				else
-					printf("%s", tmp->command[i++]);
+					printf("%s", command[i++]);
 			}
 		}
 		else
 		{
-			while (tmp->command[i])
+			while (command[i])
 			{
-				if (tmp->command[i + 1])
-					printf("%s ", tmp->command[i++]);
+				if (command[i + 1])
+					printf("%s ", command[i++]);
 				else
-					printf("%s", tmp->command[i++]);
+					printf("%s", command[i++]);
 			}
 			printf("\n");
 		}
@@ -115,7 +118,7 @@ void	look_for_new(void)
 		tmp = tmp->next;
 	}
 }
-void	cd(t_args *args)
+void	cd(char **command)
 {
 	int		val;
 	char	*str;
@@ -125,42 +128,24 @@ void	cd(t_args *args)
 
 	i = 0;
 	j = 0;
-	if (args->command[1] == NULL)
-	{
-		str = getcwd(0, 0);
-		while (j != 4)
-		{
-			if (str[i] && str[i] == '/')
-				j++;
-			i++;
-		}
-		str1 = malloc(i);
-		ft_strlcpy(str1, str, i);
-		free(str);
-		val = chdir(str1);
-		free(str1);
-		if (val < 0)
-		{
-			perror("cd");
-			return ;
-		}
+	if (!command[1])
 		return ;
-	}
-	val = chdir(args->command[1]);
+	val = chdir(command[1]);
 	if (val < 0)
 	{
 		str = getcwd(0, 0);
 		i = ft_strlen(str);
-		j = ft_strlen(args->command[1]);
+		j = ft_strlen(command[1]);
 		str1 = malloc(i + j + 1);
 		str1 = ft_strcpy(str1, str);
 		str1[i] = '/';
 		str1[i + 1] = '\0';
-		str1 = ft_strjoin(str1, args->command[1]);
+		str1 = ft_strjoin(str1, command[1]);
 		val = chdir(str1);
 		free(str1);
 		if (val < 0)
 			perror("cd");
+		free(str);
 	}
 }
 
@@ -171,12 +156,6 @@ void	pwd(void)
 	str = getcwd(0, 0);
 	printf("%s\n", str);
 	free(str);
-}
-
-void	ft_exit(void)
-{
-	ft_putendl_fd("gggggggsdagdash", 2);
-	exit(0);
 }
 
 void	env(void)
@@ -192,66 +171,6 @@ void	env(void)
 	}
 }
 
-char	*add_eq(char *str)
-{
-	char	*ret;
-	int		i;
-
-	i = 0;
-	ret = malloc(ft_strlen(str) + 2);
-	while (str[i])
-	{
-		ret[i] = str[i];
-		i++;
-	}
-	ret[i] = '=';
-	ret[i + 1] = 0;
-	return (ret);
-}
-
-void ft_unset(char	**str)
-{
-	t_env	*tmp;
-	t_env	*tmp1;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		str[i] = add_eq(str[i]);
-		i++;
-	}
-	i = 0;
-	while (str[i])
-	{
-		tmp = glo.env;
-		tmp1 = glo.env;
-		while (tmp1)
-		{
-			if (ft_strlen(str[i]) == ft_strlen(tmp1->name))
-			{
-				if (ft_strcmp(str[i], tmp1->name) == 1)
-				{
-					tmp->next = tmp1->next;
-					break ;
-				}
-			}
-			if (j > 0)
-				tmp = tmp->next;
-			tmp1 = tmp1->next;
-			j++;
-		}
-		if (tmp1)
-		{
-			free(tmp1->name);
-			free(tmp1->value);
-			free(tmp1);
-		}
-		i++;
-	}
-}
 
 int	check_for_export(char *str)
 {
@@ -290,9 +209,12 @@ void	add_new_var(char *str0, char *str1)
 void	export(char *str)
 {
 	t_env	*tmp;
+	t_env	*ret;
 	char	**hol;
 	int		i;
 
+	i = 2;
+	tmp = glo.env;
 	if (!str)
 	{
 		while (tmp)
@@ -304,31 +226,59 @@ void	export(char *str)
 		}
 		return ;
 	}
-	if (check_for_export(str) < 0)
-		return ;
-	i = 0;
-	tmp = glo.env;
 	hol = ft_split(str, '=');
-	hol[0] = ft_strjoin(hol[0], "=");
-	while (tmp)
+	if (hol[1])
 	{
-		if (ft_strlen(tmp->name) == ft_strlen(hol[0]))
+		while(hol[i])
 		{
-			if (ft_strcmp(hol[0], tmp->name) == 1)
-				break ;
+			hol[1] = ft_strjoin(hol[1], "=");
+			hol[1] = ft_strjoin(hol[1], hol[i++]);
 		}
-		tmp = tmp->next;
 	}
+	hol[0] = ft_strjoin(hol[0], "=");
+	i = 0;
 	if (tmp)
 	{
-		free(tmp->value);
-		tmp->value = ft_strdup(hol[1])	;
-		while (hol[i])
-			free(hol[i++]);
-		free(hol);
-		return ;
+		while (tmp->next)
+		{
+			if (ft_strlen(tmp->name) == ft_strlen(hol[0]))
+			{
+				if (ft_strncmp(tmp->name, hol[0], ft_strlen(hol[0])) == 0)
+				{
+					i = 1;
+					break ;
+				}
+			}
+			tmp = tmp->next;
+		}
+		if (tmp)
+		{
+			if (ft_strlen(tmp->name) == ft_strlen(hol[0]))
+			{
+				if (ft_strncmp(tmp->name, hol[0], ft_strlen(hol[0])) == 0)
+					i = 1;
+			}
+		}
+		if (i == 1)
+		{
+			free(tmp->value);
+			tmp->value = ft_substr(hol[1], 0, ft_strlen(hol[1]));
+			i = 0;
+			while (hol[i])
+				free(hol[i++]);
+			free(hol);
+			return ;
+		}
 	}
-	add_new_var(hol[0], hol[1]);
+	ret = malloc(sizeof(t_env));
+	ret->name = ft_strdup(hol[0]);
+	ret->value = ft_strdup(hol[1]);
+	ret->next = 0;
+	if (glo.env)
+		glo.env = ret;
+	else
+		tmp->next = ret;
+	i = 0;
 	while (hol[i])
 		free(hol[i++]);
 	free(hol);

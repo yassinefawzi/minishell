@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:43:39 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/03/25 02:48:09 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 06:30:34 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (n == 0)
-		return (0);
+	if(!n)
+		return (-1);
 	while ((s1[i] || s2[i]) && i < n)
 	{
 		if (s1[i] != s2[i])

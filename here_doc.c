@@ -6,11 +6,11 @@
 /*   By: yoelansa <yoelansa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 21:30:59 by yoelansa          #+#    #+#             */
-/*   Updated: 2023/08/20 21:34:40 by yoelansa         ###   ########.fr       */
+/*   Updated: 2023/08/30 03:57:25 by yoelansa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	execute_child(char *eof, int *fd)
 {
@@ -20,8 +20,8 @@ void	execute_child(char *eof, int *fd)
 	close(fd[0]);
 	while (1)
 	{
-		lexer = readline("herecod> ");
-		if (!eof || ft_strcmp(lexer, eof) > 0)
+		lexer = readline("> ");
+		if (!eof || !ft_strncmp(lexer, eof, ft_strlen(eof)))
 		{
 			free(lexer);
 			break ;

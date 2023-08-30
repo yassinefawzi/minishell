@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   brackets.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoelansa <yoelansa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 03:48:29 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/19 19:05:01 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 03:30:25 by yoelansa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,39 @@ int	sym_check(char *str, char sym, char sym2)
 int	check_for_brackets(char *str)
 {
 	int		i;
+	int		j;
 	char	*syms;
 
 	syms = ft_strdup("()[]{}`");
 	i = 0;
+	j = 0;
 	while (syms[i] && i < 6)
 	{
 		if (sym_check(str, syms[i], syms[i + 1]) < 0)
 		{
+			free(syms);
 			error_message("parsing error\n");
 			return (-1);
 		}
 		i += 2;
 	}
 	free(syms);
+	i = 0;
+	while (str[i])
+	{
+		while (str[i] == '>' || str[i] == '<')
+		{
+			i++;
+			j++;
+		}
+		if (j > 2)
+		{
+			error_message("parsing error\n");
+			return (-1);
+		}
+		if (str[i])
+			i++;
+		j = 0;
+	}
 	return (1);
 }

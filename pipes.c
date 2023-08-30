@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:56:34 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/07/08 03:09:56 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 08:58:31 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,20 @@ int	check_for_pipes(char *str)
 	i = 0;
 	while (str[i])
 	{
+		if (str[0] == '|')
+			return (error_message("parse error near `|'\n"));
 		if (str[i] == '|')
 		{
 			if (str[i + 1] == '|')
-			{
-				error_message("parse error near `|'\n");
-				return (-1);
-			}
+				return (error_message("parse error near `|'\n"));
+			i++;
+			while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+				i++;
+			if (str[i] == '\0' || str[i] == '|')
+				return (error_message("parse error near `|'\n"));
 		}
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   red.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoelansa <yoelansa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 11:31:48 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 23:24:48 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 03:51:52 by yoelansa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,18 @@ int	count_space_for_redirection(char *str)
 		if (str[i] == '>' || str[i] == '<')
 		{
 			hol = str[i];
-			if (str[i + 1] != hol || str[i - 1] != hol)
+			if (str[i + 1] != hol)
 			{
 				if (str[i + 1] != ' ' && str[i + 1] != '\t')
 					j++;
-				if (str[i - 1] != ' ' && str[i - 1] != '\t')
-					j++;
+				if (i != 0)
+				{
+					if (str[i - 1] != hol)
+					{
+						if (str[i - 1] != ' ' && str[i - 1] != '\t')
+							j++;
+					}
+				}
 			}
 		}
 		i++;
@@ -127,11 +133,19 @@ char	*added_space(char *str)
 				{
 					if (str[i] != '<' && str[i + 1] != '>')
 					{
-						if (str[i - 1] == '\'' || str[i - 1] == '"')
+						if (i >= 0 )
 						{
-							ret[j++] = str[i++];
-							ret[j++] = str[i++];
-							ret[j++] = ' ';
+							if (str[i - 1] == '\'' || str[i - 1] == '"')
+							{
+								ret[j++] = str[i++];
+								ret[j++] = str[i++];
+								ret[j++] = ' ';
+							}
+							else
+							{
+								ret[j++] = str[i++];
+								ret[j++] = ' ';
+							}
 						}
 						else
 						{
@@ -163,7 +177,7 @@ int	num_of_diction(char **str)
 	{
 		if (str[i][0] == '>' || str[i][0] == '<')
 		{
-			if (str[i + 1][0] == '>' || str[i + 1][0] == '<')
+			if (str[i + 1] && (str[i + 1][0] == '>' || str[i + 1][0] == '<'))
 				i++;
 			ret++;
 		}
@@ -183,7 +197,7 @@ int	num_of_dictions(char **str)
 	{
 		if (str[i][0] == '>' || str[i][0] == '<')
 		{
-			if (str[i + 1][0] == '>' || str[i + 1][0] == '<')
+			if (str[i + 1] && (str[i + 1][0] == '>' || str[i + 1][0] == '<'))
 				i++;
 			ret++;
 		}
@@ -206,7 +220,7 @@ int	*check_for_redirections(char **str)
 		ret[0] = 0;
 		return (ret);
 	}
-	ret = malloc (num_of_dictions(str) * sizeof(int));
+	ret = malloc (i * sizeof(int));
 	i = 0;
 	while (str[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: yfawzi <yfawzi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 00:52:47 by yfawzi            #+#    #+#             */
-/*   Updated: 2023/08/20 23:17:32 by yfawzi           ###   ########.fr       */
+/*   Updated: 2023/08/30 08:56:22 by yfawzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,8 @@ int	check_if_valid(char *str)
 	return (-1);
 }
 
-int	cleaned_len(char *str)
+int	cleaned_len(char *str, int i, int ret, int hol)
 {
-	int	i;
-	int	ret;
-	int	hol;
-
-	ret = 0;
-	i = 0;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	while (str[i])
@@ -49,12 +43,8 @@ int	cleaned_len(char *str)
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			hol = first_quote(str + i, str[i]);
-			while (str[i] && hol)
-			{
-				i++;
+			while (str[i++] && hol--)
 				ret++;
-				hol--;
-			}
 		}
 		if (str[i] == ' ' || str[i] == '\t')
 		{
@@ -66,21 +56,18 @@ int	cleaned_len(char *str)
 			}
 		}
 		ret++;
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (ret);
 }
 
-char	*ft_clean(char *str)
+char	*ft_clean(char *str, int i, int j)
 {
-	int		i;
-	int		j;
 	char	*ret;
 	int		hol;
 
-	i = 0;
-	j = 0;
-	ret = malloc(cleaned_len(str) + 1);
+	ret = malloc(cleaned_len(str, 0, 0, 0) + 1);
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	while (str[i])
@@ -88,36 +75,33 @@ char	*ft_clean(char *str)
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			hol = first_quote(str + i, str[i]);
-			while (str[i] && hol)
-			{
-				ret[j] = str[i];
-				i++;
-				j++;
-				hol--;
-			}
+			while (str[i] && hol--)
+				ret[j++] = str[i++];
 		}
 		if (str[i] == ' ' && str[i] == '\t')
 		{
 			while (str[i + 1] == ' ' || str[i + 1] == '\t')
 				i++;
 		}
-		ret[j] = str[i];
-		i++;
-		j++;
+		ret[j++] = str[i++];
 	}
 	ret[j] = 0;
 	free(str);
 	return (ret);
 }
 
-int	ft_spaces_len(char	*str)
+int	ft_spaces_len_norm(char *str, int i, int ret)
 {
-	int		i;
-	int		ret;
-	char	hol;
+	if (i > 0)
+	{
+		if (str[i - 1] == ' ' || str[i - 1] == '\t')
+			ret--;
+	}
+	return (ret);
+}
 
-	ret = 0;
-	i = 0;
+int	ft_spaces_len(char	*str, int i, int ret, char hol)
+{
 	while (str[i])
 	{
 		if (str[i] == '"' || str[i] == '\'')
@@ -140,30 +124,26 @@ int	ft_spaces_len(char	*str)
 		ret++;
 	}
 	if (str)
-	{
-		if (i > 0)
-		{
-			if (str[i - 1] == ' ' || str[i - 1] == '\t')
-				ret--;
-		}
-	}
-	// printf("%d\n", ret);
+		ret = ft_spaces_len_norm(str, i, ret);
 	return (ret);
 }
 
-char	*cleaned_spaces(char *str)
+int	cleaned_spaces_norm(char *str, int i)
 {
-	int		i;
-	int		j;
-	int		k;
+	while (str[i + 1] && (str[i + 1] == ' ' || str[i + 1] == '\t'))
+		i++;
+	if ((str[i] == ' ' || str[i] == '\t') && !str[i + 1])
+		i++;
+	return (i);
+}
+
+char	*cleaned_spaces(char *str, int i, int j, int k)
+{
 	char	*ret;
 
-	i = 0;
-	j = 0;
-	k = 0;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
-	ret = malloc(ft_spaces_len(str) + 1);
+	ret = malloc(ft_spaces_len(str, 0, 0, 0) + 1);
 	while (str[i])
 	{
 		if (!str[i + 1]  && (str[i] == ' ' || str[i] == '\t'))
@@ -175,12 +155,7 @@ char	*cleaned_spaces(char *str)
 				ret[j++] = str[i++];
 		}
 		if (str[i] == ' ' || str[i] == '\t')
-		{
-			while (str[i + 1] && (str[i + 1] == ' ' || str[i + 1] == '\t'))
-				i++;
-			if ((str[i] == ' ' || str[i] == '\t') && !str[i + 1])
-				i++;
-		}
+			i = cleaned_spaces_norm(str, i);
 		if (str[i])
 			ret[j++] = str[i++];
 	}
